@@ -11,7 +11,7 @@ const ENDPOINTS = {
   registerByPhone: '/auth/register-by-phone',
   refresh: '/auth/refresh',
   me: '/main/auth/user/me',
-  edit: '/main/auth/user',
+  edit: '/main/auth/user/me',
   push: '/main/auth/user/token',
 };
 
@@ -157,26 +157,32 @@ export const me = async () => {
 // //   }
 // // };
 
-// // export const updateUser = async (user: UserInitials) => {
-// //   const { data, status } = await apiInstance.put(ENDPOINTS.edit, {
-// //     ...user
-// //   })
+export type UserInitials = {
+  name: string;
+  surname: string;
+  middleName: string;
+};
 
-// //   if (status === 400) {
-// //     throw new Error('Bad request');
-// //   }
+export const updateUser = async (user: UserInitials) => {
+  const { data, status } = await apiInstance.put(ENDPOINTS.edit, {
+    ...user
+  })
 
-// //   if (status === 401) {
-// //     throw new Error('Unauthorized');
-// //   }
+  if (status === 400) {
+    throw new Error('Bad request');
+  }
 
-// //   if (status === 409) {
-// //     throw new Error('Conflict');
-// //   }
+  if (status === 401) {
+    throw new Error('Unauthorized');
+  }
 
-// //   return data;
+  if (status === 409) {
+    throw new Error('Conflict');
+  }
 
-// // }
+  return data;
+
+}
 
 // export const getUsers = async ({ hasDepartment, departmentId, role }: { hasDepartment?: boolean | null, departmentId?: string | null, role?: string }) => {
 //   try {
