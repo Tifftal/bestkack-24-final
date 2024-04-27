@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createReduxHookFactory } from "../createReduxHookFactory";
 import { SliceActions } from "../sliceActions";
 
-const initialState: string = 'analys';
+const initialState: string = 'main';
 
 export const navigationSlice = createSlice({
     name: 'navigation',

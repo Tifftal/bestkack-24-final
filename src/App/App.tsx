@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import MainPage from 'App/pages/MainPage'
 import LoginPage from 'App/pages/LoginPage'
 import RegistrationPage from 'App/pages/RegistrationPage';
@@ -33,14 +33,12 @@ function App() {
     <div className={styles.App}>
       <BrowserRouter>
         {isShow && <ErrorNotification />}
-        <Navbar />
         <Routes>
-          <Route path='/' element={<MainPage />} />
+          <Route path='/' element={<> <Navbar /><MainPage /><Footer /></>} />
           <Route path='profile' element={<ProfilePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/registration' element={<RegistrationPage />} />
         </Routes>
-        <Footer />
       </BrowserRouter>
     </div>
   )
