@@ -1,24 +1,60 @@
 import { TextInput, Button, Group, PinInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login, login_validate, test_one, test_three, test_two } from 'api/user/index';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'store/UserSlice/UserSlice';
 
 import styles from './LoginPage.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-    const [isPin, setIsPin] = useState(false);
-    const [pinCode, setPinCode] = useState('');
+    const [isPin, setIsPin] = useState<boolean>(false);
+    const [pinCode, setPinCode] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
 
     const navigate = useNavigate();
 
-    const handleFormSubmit = (values: any) => {
+    const dispath = useDispatch();
+
+    const handleFormSubmit = async (values: any) => {
         console.log(values);
-        setIsPin(true);
+        try {
+            const response = await login_validate(
+                values.phone,
+            )
+
+            if (response.status === 200) {
+                setIsPin(true);
+                setPhone(values.phone);
+            }
+        }
+
+        catch (error) {
+            console.error(error)
+        }
     };
 
-    const Login = () => {
-        console.log(pinCode);
-        navigate('/');
+    const Login = async () => {
+        try {
+            const response = await login(
+                phone,
+                pinCode
+            )
+
+            if (response.data.jwtTokens) {
+                localStorage.setItem('atoken', response.data.jwtTokens.access);
+                localStorage.setItem('rtoken', response.data.jwtTokens.refresh);
+            }
+
+            dispath(setUser(response.data));
+            navigate('/');
+            console.log(response)
+        }
+
+        catch (error) {
+            console.error(error)
+        }
     }
 
     const handlePinInputChange = (value: string) => {
@@ -36,6 +72,16 @@ const LoginPage = () => {
             phone: (value) => (value.length === 12 ? null : 'Некорректный номер телефона'),
         },
     });
+
+    const TestError = async () => {
+        try {
+            const response = await test_three()
+            console.log(response)
+        }
+        catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <form onSubmit={form.onSubmit(values => handleFormSubmit(values))} className={styles.form}>
@@ -63,6 +109,7 @@ const LoginPage = () => {
                 />
                 <Button onClick={Login}>Войти</Button>
             </Group>
+            <Button onClick={TestError}>TEST ERROR</Button>
         </form >
     );
 }

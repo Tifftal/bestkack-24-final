@@ -6,6 +6,8 @@ import App from 'App/App'
 
 import '@mantine/core/styles.css';
 import 'styles/style.scss'
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 const theme = createTheme({
   colors: {
@@ -38,9 +40,11 @@ const theme = createTheme({
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <MantineProvider theme={theme}>
-    <App />
-  </MantineProvider>
+  <Provider store={store}>
+    <MantineProvider theme={theme}>
+      <App />
+    </MantineProvider>
+  </Provider>
 )
 
 if ("serviceWorker" in navigator) {

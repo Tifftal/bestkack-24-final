@@ -38,6 +38,12 @@
       ],
       "assets": [
         "assets/*"
+      ],
+      "store": [
+        "store/*"
+      ],
+      "api": [
+        "api/*"
       ]
     }
   },

@@ -1,24 +1,86 @@
-import { useForm, isNotEmpty, isInRange } from '@mantine/form';
+import { useForm, isNotEmpty, hasLength } from '@mantine/form';
 import { Button, Group, TextInput, PinInput } from '@mantine/core';
 
 import styles from './RegistrationPage.module.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { register_validate, register } from 'api/user';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'store/UserSlice/UserSlice';
+
+interface FormValues {
+    login: string;
+    name: string;
+    middleName: string;
+    surname: string;
+    phone: string;
+}
 
 const RegistrationPage = () => {
     const [isPin, setIsPin] = useState(false);
     const [pinCode, setPinCode] = useState('');
+    const [formVal, setFormVal] = useState<FormValues>({
+        login: '',
+        name: '',
+        middleName: '',
+        surname: '',
+        phone: '',
+    });
 
     const navigate = useNavigate();
 
-    const handleFormSubmit = (values: any) => {
-        console.log(values);
-        setIsPin(true);
+    const dispath = useDispatch();
+
+    const handleFormSubmit = async (values: any) => {
+        try {
+            const response = await register_validate(
+                values.login,
+                values.name,
+                values.middleName,
+                values.surname,
+                values.phone,
+            )
+
+            if (response.status === 200) {
+                setIsPin(true);
+                setFormVal({
+                    login: values.login,
+                    name: values.name,
+                    middleName: values.middleName,
+                    surname: values.surname,
+                    phone: values.phone,
+                })
+            }
+        }
+
+        catch (error) {
+            console.error(error)
+        }
     };
 
-    const Login = () => {
-        console.log(pinCode);
-        navigate('/');
+    const Registrate = async () => {
+        try {
+            const response = await register(
+                formVal.login,
+                formVal.name,
+                formVal.middleName,
+                formVal.surname,
+                formVal.phone,
+                pinCode
+            )
+
+            if (response.data.jwtTokens) {
+                localStorage.setItem('atoken', response.data.jwtTokens.access);
+                localStorage.setItem('rtoken', response.data.jwtTokens.refresh);
+            }
+
+            dispath(setUser(response.data));
+            navigate('/');
+        }
+
+        catch (error) {
+            console.error(error)
+        }
     }
 
     const handlePinInputChange = (value: string) => {
@@ -38,8 +100,8 @@ const RegistrationPage = () => {
         validate: {
             name: isNotEmpty('Введите имя'),
             surname: isNotEmpty('Введите фамилию'),
-            login: isInRange({ min: 6 }, 'Логин должен содержать не менее 6 символов'),
-            phone: (value) => (value.length === 10 ? null : 'Некорректный номер телефона'),
+            login: hasLength({ min: 6 }, 'Логин должен содержать не менее 6 символов'),
+            phone: (value) => (value.length === 12 ? null : 'Некорректный номер телефона'),
         },
     });
 
@@ -97,7 +159,7 @@ const RegistrationPage = () => {
                         value={pinCode}
                         onChange={handlePinInputChange}
                     />
-                    <Button onClick={Login}>Зарегистрироваться</Button>
+                    <Button onClick={Registrate}>Зарегистрироваться</Button>
                 </Group>
             </form>
         </div>
