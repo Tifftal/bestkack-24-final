@@ -1,8 +1,4 @@
-// import { UserInitials } from 'App/pages/ProfilePage/ProfilePage';
-// import { getFirebaseToken } from '../../config/firebase/firebaseConfig';
 import { apiInstance } from '../AxiosBaseApi';
-
-const USERS_LIMIT = 1000000;
 
 const ENDPOINTS = {
   login: '/auth/login-by-phone',

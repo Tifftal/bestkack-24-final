@@ -1,10 +1,10 @@
 import { Tabs, Text } from '@mantine/core';
-import { IconServer, IconDiscount, IconCategory, IconShoppingBag, IconCoffee, IconFileCheck, IconHome, IconQrcode } from '@tabler/icons-react';
+import { IconServer, IconDiscount, IconCategory, IconShoppingBag, IconCoffee, IconHome, IconQrcode, IconShoppingCart } from '@tabler/icons-react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './Footer.module.scss';
 import { setChosenLink } from 'store/NavigateSlice/NavigationSlice';
 import { selectNavigationState } from 'store/NavigateSlice/navigationSelector';
+import styles from './Footer.module.scss';
 
 const Footer = () => {
     const dispatch = useDispatch();
@@ -30,6 +30,12 @@ const Footer = () => {
                     >
                         <IconQrcode style={{ width: 20, height: 20 }} />
                         <Text fw={600} size='9px' mt='5px'>QR</Text>
+                    </Tabs.Tab>
+                    <Tabs.Tab
+                        value="shop"
+                    >
+                        <IconShoppingCart style={{width: 20, height: 20}} />
+                        <Text fw={600} size='9px' mt='5px'>Магазин</Text>
                     </Tabs.Tab>
                     <Tabs.Tab
                         value="product"
