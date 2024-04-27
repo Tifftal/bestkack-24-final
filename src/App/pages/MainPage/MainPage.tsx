@@ -40,6 +40,7 @@ const MainPage = () => {
                 break;
             case 'shop':
                 setComponentToRender(<Shop />);
+                break;
             case 'other':
                 setComponentToRender(<Other />);
                 break;
