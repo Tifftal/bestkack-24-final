@@ -28,8 +28,10 @@ const Navbar = () => {
                 />
                 <ActionIcon variant="transparent" radius="xl" aria-label="Settings">
                     <IconUserCircle
+                        size={60}
                         onClick={() => navigate('/profile')}
-                        style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                        // style={{ width: '70%', height: '70%' }} 
+                        stroke={1.5} />
                 </ActionIcon>
                 <Text fw={600} size='lg'>{user.name}</Text>
             </Group>
