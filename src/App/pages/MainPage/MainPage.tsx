@@ -8,6 +8,7 @@ import { setUser } from 'store/UserSlice/UserSlice';
 import Main from './components/Main';
 import QR from './components/QR';
 import Product from './components/Product';
+import Other from './components/Other'
 
 import styles from './MainPage.module.scss';
 
@@ -36,6 +37,9 @@ const MainPage = () => {
                 break;
             case 'product':
                 setComponentToRender(<Product />);
+                break;
+            case 'other':
+                setComponentToRender(<Other />);
                 break;
         }
     }, [chosenLink])
