@@ -17,7 +17,7 @@ export const notificationSlice = createSlice({
     initialState,
     reducers: {
         addNotification: (state, action: PayloadAction<NotificationType>) => {
-            state.notifications.unshift(action.payload);
+            state.notifications.push(action.payload);
         },
         closeNotification: (state, action: PayloadAction<number>) => {
             state.notifications = state.notifications.map((notification : NotificationType, idx: number) => {
