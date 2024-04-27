@@ -3,11 +3,12 @@ import { createTheme, MantineProvider, rem } from '@mantine/core';
 // eslint-disable-next-line import/default
 import ReactDOM from 'react-dom/client'
 import App from 'App/App'
-
-import '@mantine/core/styles.css';
-import 'styles/style.scss'
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
+
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import 'styles/style.scss'
 
 const theme = createTheme({
   colors: {
@@ -48,7 +49,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 )
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
+  window.addEventListener("load", function () {
     navigator.serviceWorker
       .register("/serviceWorker.js")
       .then(res => console.log("service worker registered"))

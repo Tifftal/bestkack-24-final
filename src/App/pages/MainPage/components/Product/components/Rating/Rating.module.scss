@@ -1,0 +1,12 @@
+.rating {
+    &-filter {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+.content {
+    padding: 10px 0 !important;
+    margin: 0 !important;
+}
