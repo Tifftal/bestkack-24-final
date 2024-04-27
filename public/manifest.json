@@ -1,0 +1,32 @@
+{
+    "name": "Lukoil mobile",
+    "short_name": "Lukoil mobile",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#fff",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "form_factor": "wide",
+            "src": "/lukoilIcon.png",
+            "type": "image/png", "sizes": "256x256",
+            "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshot1.png",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Application",
+            "size":"389x844"
+        },
+        {
+            "src": "/screenshot1.png",
+            "type": "image/png",
+            "label": "Application",
+            "size":"389x844"
+        }
+    ]
+}
