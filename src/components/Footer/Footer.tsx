@@ -1,5 +1,5 @@
 import { Tabs, Text } from '@mantine/core';
-import { IconServer, IconDiscount, IconTrendingUp, IconCoffee, IconFileCheck, IconHome, IconQrcode } from '@tabler/icons-react';
+import { IconServer, IconDiscount, IconCategory, IconShoppingBag, IconCoffee, IconFileCheck, IconHome, IconQrcode } from '@tabler/icons-react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Footer.module.scss';
@@ -32,12 +32,18 @@ const Footer = () => {
                         <Text fw={600} size='9px' mt='5px'>QR</Text>
                     </Tabs.Tab>
                     <Tabs.Tab
-                        value="analys"
+                        value="product"
                     >
-                        <IconTrendingUp style={{ width: 20, height: 20 }} />
-                        <Text fw={600} size='9px' mt='5px'>Анализ</Text>
+                        <IconShoppingBag style={{ width: 20, height: 20 }} />
+                        <Text fw={600} size='9px' mt='5px'>Продукт дня</Text>
                     </Tabs.Tab>
                     <Tabs.Tab
+                        value="other"
+                    >
+                        <IconCategory style={{ width: 20, height: 20 }} />
+                        <Text fw={600} size='9px' mt='5px'>Другое</Text>
+                    </Tabs.Tab>
+                    {/* <Tabs.Tab
                         value="sale"
                     >
                         <IconDiscount style={{ width: 20, height: 20 }} />
@@ -60,7 +66,7 @@ const Footer = () => {
                     >
                         <IconFileCheck style={{ width: 20, height: 20 }} />
                         <Text fw={600} size='9px' mt='5px'>Предложения</Text>
-                    </Tabs.Tab>
+                    </Tabs.Tab> */}
                 </Tabs.List>
             </Tabs>
         </div >
