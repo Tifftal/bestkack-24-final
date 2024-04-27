@@ -1,11 +1,27 @@
-import { Accordion, MultiSelect, Table } from '@mantine/core';
+import { Accordion, Button, Select, Table } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconChartBar } from '@tabler/icons-react';
 import { BarChart } from '@mantine/charts';
 import TimePicker from '../TimePicker/TimePicker';
+import { useEffect, useState } from 'react';
+import { getRegions } from 'api/products/index';
 
 import styles from './Rating.module.scss';
 
 const Rating = () => {
+    const [regions, setRegions] = useState<string[]>([]);
+    const [selectedRegion, setSelectedRegion] = useState('');
+
+    useEffect(() => {
+        getRegions()
+            .then(response => {
+                setRegions(response.data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+    }, [])
+
     const elements = [
         { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
         { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
@@ -24,6 +40,12 @@ const Rating = () => {
     const endDate = new Date();
     const startDate = new Date(endDate.getTime() - (1 * 60 * 60 * 1000));
 
+    const handleSelectChange = (value: string | null) => {
+        if (value) {
+            setSelectedRegion(value);
+        }
+    };
+
     return (
         <>
             <Accordion defaultValue="Apples" chevron={<></>} classNames={styles}>
@@ -31,13 +53,16 @@ const Rating = () => {
                     <Accordion.Control icon={<IconAdjustmentsHorizontal width={18} height={18} />}>Фильтры</Accordion.Control>
                     <Accordion.Panel>
                         <div className={styles['rating-filter']}>
-                            <MultiSelect
+                            <Select
                                 placeholder="Регион"
-                                data={['React', 'Angular', 'Vue', 'Svelte']}
-                                hidePickedOptions
+                                data={regions.map(item => item)}
+                                onChange={handleSelectChange}
+                                maxDropdownHeight={200}
+                                value={selectedRegion}
                             />
                             <TimePicker label='C' date={startDate} />
                             <TimePicker label='До' date={endDate} />
+                            <Button mt={10}>Применить</Button>
                         </div>
                     </Accordion.Panel>
                 </Accordion.Item>
