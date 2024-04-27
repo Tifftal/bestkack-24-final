@@ -28,93 +28,36 @@ export const test_three = async () => {
   return response.data;
 };
 
-export const login_validate = async (phone: string) => {
-  const response = await apiInstance.post(ENDPOINTS.login_validate, {
+export const loginValidate = async (phone: string) => {
+  return await apiInstance.post(ENDPOINTS.login_validate, {
     phone
   });
-
-  if (response.status === 400) {
-    throw new Error('Bad request');
-  }
-
-  if (response.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (response.status === 409) {
-    throw new Error('Conflict');
-  }
-
-  return response;
 };
 
 export const login = async (phone: string, code: string) => {
-  const response = await apiInstance.post(ENDPOINTS.login + `?code=${code}`, {
+  return await apiInstance.post(ENDPOINTS.login + `?code=${code}`, {
     phone
   });
-
-  if (response.status === 400) {
-    throw new Error('Bad request');
-  }
-
-  if (response.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (response.status === 409) {
-    throw new Error('Conflict');
-  }
-
-  return response;
 };
 
-
-export const register_validate = async (username: string, name: string, middleName: string, surname: string, phoneNumber: string) => {
-  const response = await apiInstance.post(ENDPOINTS.registerByPhone_validate, {
+export const registerValidate = async (username: string, name: string, middleName: string, surname: string, phoneNumber: string) => {
+  return await apiInstance.post(ENDPOINTS.registerByPhone_validate, {
     username,
     name,
     middleName,
     surname,
     phoneNumber,
   });
-
-  if (response.status === 400) {
-    throw new Error('Bad request');
-  }
-
-  if (response.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (response.status === 409) {
-    throw new Error('Conflict');
-  }
-
-  return response;
 };
 
 export const register = async (username: string, name: string, middleName: string, surname: string, phoneNumber: string, code: string) => {
-  const response = await apiInstance.post(ENDPOINTS.registerByPhone + `?code=${code}`, {
+  return await apiInstance.post(ENDPOINTS.registerByPhone + `?code=${code}`, {
     username,
     name,
     middleName,
     surname,
     phoneNumber,
   });
-
-  if (response.status === 400) {
-    throw new Error('Bad request');
-  }
-
-  if (response.status === 401) {
-    throw new Error('Unauthorized');
-  }
-
-  if (response.status === 409) {
-    throw new Error('Conflict');
-  }
-
-  return response;
 };
 
 export const refresh = async (refresh: string) => {

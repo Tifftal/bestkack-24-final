@@ -29,6 +29,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'prettier', 'react', 'react-hooks'],
   rules: {
     'no-console': 'warn',
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
     'import/order': [
       'error',
       {

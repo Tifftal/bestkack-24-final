@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { refresh } from './user';
-import { useDispatch } from 'react-redux';
-import { showNotification } from 'store/NotificationSlice/NotificationSlice';
 
 const BASE_URL = import.meta.env.VITE_BACK_URL;
 
@@ -31,7 +29,6 @@ apiInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const dispatch = useDispatch();
 
     // access token expired
     if (error.response.status === 401 && error.config && !error.config._isRetry) {
@@ -53,8 +50,7 @@ apiInstance.interceptors.response.use(
     }
 
     if (error.response.status === 503) {
-      console.log("HERE 503")
-      dispatch(showNotification(true));
+      return Promise.reject(error);
     }
 
     return Promise.reject(error);

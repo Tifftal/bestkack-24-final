@@ -1,8 +1,7 @@
 import { ActionFromReducersMapObject, configureStore } from '@reduxjs/toolkit';
-import { createReduxHookFactory } from './createReduxHookFactory';
-import { navigationReducer, navigationSlice } from './NavigateSlice/NavigationSlice';
-import { userSlice, userReducer } from 'store/UserSlice/UserSlice';
 import { notificationSlice, notificationReducer } from 'store/NotificationSlice/NotificationSlice';
+import { userSlice, userReducer } from 'store/UserSlice/UserSlice';
+import { navigationReducer, navigationSlice } from './NavigateSlice/NavigationSlice';
 
 const initialReducers = {
   [navigationSlice.name]: navigationReducer,
