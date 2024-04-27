@@ -9,14 +9,12 @@
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -34,6 +32,12 @@
       ],
       "utils": [
         "utils/*"
+      ],
+      "App": [
+        "App/*"
+      ],
+      "assets": [
+        "assets/*"
       ]
     }
   },
