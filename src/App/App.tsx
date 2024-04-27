@@ -1,15 +1,19 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
 import MainPage from 'App/pages/MainPage'
+import LoginPage from 'App/pages/LoginPage'
 
+import styles from './App.module.scss';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<MainPage />} />
-      </Routes>
-    </BrowserRouter>
+    <div className={styles.App}>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route path='/login' element={<LoginPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 

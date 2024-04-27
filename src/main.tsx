@@ -1,23 +1,23 @@
 import ReactDOM from 'react-dom/client'
 import App from 'App/App'
+import { createTheme, MantineProvider, rem } from '@mantine/core';
 
 import '@mantine/core/styles.css';
 import 'styles/style.scss'
-import { createTheme, MantineProvider, rem } from '@mantine/core';
 
 const theme = createTheme({
   colors: {
     blue: [
-      '#faf2ef',
-      '#efe3de',
-      '#e2c4b8',
-      '#d5a38e',
-      '#cb876b',
-      '#c57453',
-      '#c26b48',
-      '#ac5b39',
-      '#995031',
-      '#864327',
+      "#f3fde6",
+      "#eaf8d3",
+      "#d4efab",
+      "#bce67e",
+      "#a9de57",
+      "#9cd940",
+      "#95d731",
+      "#80be23",
+      "#71a91a",
+      "#5f9209"
     ],
   },
 
@@ -36,7 +36,7 @@ const theme = createTheme({
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <MantineProvider theme={theme}>
+  <MantineProvider defaultColorScheme="dark" theme={theme}>
     <App />
   </MantineProvider>
 )
