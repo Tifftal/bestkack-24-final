@@ -16,7 +16,9 @@ const Navbar = () => {
                     src={logo}
                 />
                 <ActionIcon variant="light" radius="xl" aria-label="Settings">
-                    <IconUserCircle style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                    <IconUserCircle 
+                    onClick={() => navigate('/profile')}
+                    style={{ width: '70%', height: '70%' }} stroke={1.5} />
                 </ActionIcon>
                 <Text fw={600} size='lg'>Варвара</Text>
             </Group>

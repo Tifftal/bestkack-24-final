@@ -11,6 +11,7 @@ import { showNotification } from 'store/NotificationSlice/NotificationSlice';
 
 import styles from './App.module.scss';
 import ErrorNotification from 'components/Notification';
+import ProfilePage from 'App/pages/ProfilePage';
 
 function App() {
   const dispath = useDispatch();
@@ -35,6 +36,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<MainPage />} />
+          <Route path='profile' element={<ProfilePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/registration' element={<RegistrationPage />} />
         </Routes>
