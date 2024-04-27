@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { selectNavigationState } from 'store/NavigateSlice/navigationSelector';
-import { selectUserState } from 'store/UserSlice/userSelector';
 import { ReactElement, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { me } from 'api/user/index';
+import { selectNavigationState } from 'store/NavigateSlice/navigationSelector';
 import { setUser } from 'store/UserSlice/UserSlice';
 import Main from './components/Main';
-import QR from './components/QR';
 import Product from './components/Product';
 import Other from './components/Other'
+import QR from './components/QR';
+import Shop from './components/Shop';
 
 import styles from './MainPage.module.scss';
 
@@ -38,6 +38,8 @@ const MainPage = () => {
             case 'product':
                 setComponentToRender(<Product />);
                 break;
+            case 'shop':
+                setComponentToRender(<Shop />);
             case 'other':
                 setComponentToRender(<Other />);
                 break;

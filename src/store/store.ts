@@ -2,12 +2,14 @@ import { ActionFromReducersMapObject, configureStore } from '@reduxjs/toolkit';
 import { notificationSlice, notificationReducer } from 'store/NotificationSlice/NotificationSlice';
 import { userSlice, userReducer } from 'store/UserSlice/UserSlice';
 import { navigationReducer, navigationSlice } from './NavigateSlice/NavigationSlice';
+import { productReducer, productSlice } from './ProductsSlice/ProductsSlice';
 import { createReduxHookFactory } from './createReduxHookFactory';
 
 const initialReducers = {
   [navigationSlice.name]: navigationReducer,
   [userSlice.name]: userReducer,
-  [notificationSlice.name]: notificationReducer
+  [notificationSlice.name]: notificationReducer,
+  [productSlice.name]: productReducer,
 }
 
 export const store = configureStore({
