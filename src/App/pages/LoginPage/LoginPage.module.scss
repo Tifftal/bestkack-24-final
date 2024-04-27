@@ -1,0 +1,9 @@
+.form {
+    padding: 50px 30px;
+
+    &-input {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

@@ -1,8 +1,12 @@
+
+
 import styles from './MainPage.module.scss';
 
 const MainPage = () => {
     return (
-        <>MAIN</>
+        <div className={styles.main}>
+            MAIN
+        </div>
     );
 }
 

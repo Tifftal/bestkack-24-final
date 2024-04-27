@@ -8,16 +8,16 @@ import 'styles/style.scss'
 const theme = createTheme({
   colors: {
     blue: [
-      "#f3fde6",
-      "#eaf8d3",
-      "#d4efab",
-      "#bce67e",
-      "#a9de57",
-      "#9cd940",
-      "#95d731",
-      "#80be23",
-      "#71a91a",
-      "#5f9209"
+      "#ffeae8",
+      "#ffd4d0",
+      "#fba6a0",
+      "#f7766d",
+      "#f34d41",
+      "#f23325",
+      "#f22516",
+      "#d8180b",
+      "#c11007",
+      "#a90102"
     ],
   },
 
@@ -36,7 +36,7 @@ const theme = createTheme({
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <MantineProvider defaultColorScheme="dark" theme={theme}>
+  <MantineProvider theme={theme}>
     <App />
   </MantineProvider>
 )
