@@ -2,6 +2,7 @@ import { ActionFromReducersMapObject, configureStore } from '@reduxjs/toolkit';
 import { notificationSlice, notificationReducer } from 'store/NotificationSlice/NotificationSlice';
 import { userSlice, userReducer } from 'store/UserSlice/UserSlice';
 import { navigationReducer, navigationSlice } from './NavigateSlice/NavigationSlice';
+import { createReduxHookFactory } from './createReduxHookFactory';
 
 const initialReducers = {
   [navigationSlice.name]: navigationReducer,

@@ -1,14 +1,12 @@
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
-import MainPage from 'App/pages/MainPage'
 import LoginPage from 'App/pages/LoginPage'
 import MainPage from 'App/pages/MainPage'
+import ProfilePage from 'App/pages/ProfilePage';
 import RegistrationPage from 'App/pages/RegistrationPage';
 import NotificationWrapper from 'App/widgets/Notifications/NotificationWrapper';
 import Footer from 'components/Footer';
 import Navbar from 'components/Navbar';
 import styles from './App.module.scss';
-import ErrorNotification from 'components/Notification';
-import ProfilePage from 'App/pages/ProfilePage';
 
 function App() {
   return (
