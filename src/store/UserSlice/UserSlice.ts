@@ -40,6 +40,7 @@ export const userSlice = createSlice({
         setUser: (state, action: PayloadAction<User>) => {
             console.log(state, action.payload)
             Object.assign(state, action.payload);
+            console.log(state, action.payload)
         },
         // refreshTokens: (state, action: PayloadAction<JwtTokens>) => {
         //     Object.assign(state.jwtTokens, action.payload);

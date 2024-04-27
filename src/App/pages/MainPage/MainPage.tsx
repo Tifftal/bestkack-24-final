@@ -8,7 +8,7 @@ const MainPage = () => {
     const chosenLink = useSelector(selectNavigationState);
     const user = useSelector(selectUserState)
 
-    // console.log(user.id)
+    console.log(user.id)
     return (
         <div className={styles.main}>
             {chosenLink}
