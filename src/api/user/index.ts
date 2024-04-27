@@ -129,19 +129,19 @@ export const refresh = async (refresh: string) => {
   return data;
 };
 
-// export const me = async () => {
-//   const { data, status } = await apiInstance.get(ENDPOINTS.me);
+export const me = async () => {
+  const response = await apiInstance.get(ENDPOINTS.me);
 
-//   if (status === 400) {
-//     throw new Error('Bad request');
-//   }
+  if (response.status === 400) {
+    throw new Error('Bad request');
+  }
 
-//   if (status === 401) {
-//     throw new Error('Unauthorized');
-//   }
+  if (response.status === 401) {
+    throw new Error('Unauthorized');
+  }
 
-//   return data;
-// };
+  return response;
+};
 
 // // export const generatePushToken = async () => {
 // //   try {
