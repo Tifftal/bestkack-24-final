@@ -1,12 +1,13 @@
-import { useForm, isNotEmpty, hasLength } from '@mantine/form';
 import { Button, Group, TextInput, PinInput } from '@mantine/core';
-
-import styles from './RegistrationPage.module.scss';
+import { useForm, isNotEmpty, hasLength } from '@mantine/form';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { register_validate, register } from 'api/user';
+
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { registerValidate, register } from 'api/user';
+import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
+import styles from './RegistrationPage.module.scss';
 
 interface FormValues {
     login: string;
@@ -16,7 +17,7 @@ interface FormValues {
     phone: string;
 }
 
-const RegistrationPage = () => {
+const RegistrationPage: React.FC = () => {
     const [isPin, setIsPin] = useState(false);
     const [pinCode, setPinCode] = useState('');
     const [formVal, setFormVal] = useState<FormValues>({
@@ -29,11 +30,11 @@ const RegistrationPage = () => {
 
     const navigate = useNavigate();
 
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
 
     const handleFormSubmit = async (values: any) => {
         try {
-            const response = await register_validate(
+            const { status } = await registerValidate(
                 values.login,
                 values.name,
                 values.middleName,
@@ -41,7 +42,7 @@ const RegistrationPage = () => {
                 values.phone,
             )
 
-            if (response.status === 200) {
+            if (status === 200) {
                 setIsPin(true);
                 setFormVal({
                     login: values.login,
@@ -51,16 +52,21 @@ const RegistrationPage = () => {
                     phone: values.phone,
                 })
             }
-        }
+        } catch ({ response }) {
+            const { data, status } = response;
 
-        catch (error) {
-            console.error(error)
+            dispatch(addNotification({
+                title: 'Ошибка',
+                status: status || undefined,
+                description: data?.message || 'Произошла ошибка при авторизации',
+                isOpen: true,
+            }))
         }
     };
 
     const Registrate = async () => {
         try {
-            const response = await register(
+            const { data, status } = await register(
                 formVal.login,
                 formVal.name,
                 formVal.middleName,
@@ -69,17 +75,22 @@ const RegistrationPage = () => {
                 pinCode
             )
 
-            if (response.data.jwtTokens) {
-                localStorage.setItem('atoken', response.data.jwtTokens.access);
-                localStorage.setItem('rtoken', response.data.jwtTokens.refresh);
+            if (status === 200 && data.jwtTokens) {
+                localStorage.setItem('atoken', data.jwtTokens.access);
+                localStorage.setItem('rtoken', data.jwtTokens.refresh);
             }
 
-            dispath(setUser(response.data));
+            dispatch(setUser(data));
             navigate('/');
-        }
+        } catch ({ response }) {
+            const { data, status } = response;
 
-        catch (error) {
-            console.error(error)
+            dispatch(addNotification({
+                title: 'Ошибка',
+                status: status || undefined,
+                description: data?.message || 'Произошла ошибка при авторизации',
+                isOpen: true,
+            }))
         }
     }
 

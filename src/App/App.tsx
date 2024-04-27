@@ -1,47 +1,27 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import MainPage from 'App/pages/MainPage'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import LoginPage from 'App/pages/LoginPage'
-import RegistrationPage from 'App/pages/RegistrationPage';
-import Navbar from 'components/Navbar';
-import Footer from 'components/Footer';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectNotificationState } from 'store/NotificationSlice/notificationSelector';
-import { useEffect } from 'react';
-import { showNotification } from 'store/NotificationSlice/NotificationSlice';
-
-import styles from './App.module.scss';
-import ErrorNotification from 'components/Notification';
+import MainPage from 'App/pages/MainPage'
 import ProfilePage from 'App/pages/ProfilePage';
+import RegistrationPage from 'App/pages/RegistrationPage';
+import NotificationWrapper from 'App/widgets/Notifications/NotificationWrapper';
+import Footer from 'components/Footer';
+import Navbar from 'components/Navbar';
+import styles from './App.module.scss';
 
 function App() {
-  const dispath = useDispatch();
-  const isShow = useSelector(selectNotificationState);
-
-  useEffect(() => {
-    if (isShow) {
-      const timer = setTimeout(() => {
-        dispath(showNotification(false))
-      }, 5000);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [isShow]);
-
   return (
     <div className={styles.App}>
-      <BrowserRouter>
-        {isShow && <ErrorNotification />}
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<MainPage />} />
-          <Route path='profile' element={<ProfilePage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/registration' element={<RegistrationPage />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <NotificationWrapper>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<MainPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/registration' element={<RegistrationPage />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </NotificationWrapper>
     </div>
   )
 }

@@ -1,16 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { selectNavigationState } from 'store/NavigateSlice/navigationSelector';
 import { selectUserState } from 'store/UserSlice/userSelector';
-import { useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { me } from 'api/user/index';
 import { setUser } from 'store/UserSlice/UserSlice';
+import Main from './components/Main';
+import QR from './components/QR';
+import Product from './components/Product';
 
 import styles from './MainPage.module.scss';
 
 const MainPage = () => {
+    const [componentToRender, setComponentToRender] = useState<ReactElement>();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const chosenLink = useSelector(selectNavigationState);
 
     useEffect(() => {
         if (!localStorage.getItem('atoken')) {
@@ -21,13 +26,23 @@ const MainPage = () => {
         });
     }, []);
 
-    const chosenLink = useSelector(selectNavigationState);
-    const user = useSelector(selectUserState)
+    useEffect(() => {
+        switch (chosenLink) {
+            case 'main':
+                setComponentToRender(<Main />);
+                break;
+            case 'qr':
+                setComponentToRender(<QR />);
+                break;
+            case 'product':
+                setComponentToRender(<Product />);
+                break;
+        }
+    }, [chosenLink])
 
-    console.log(user.id)
     return (
         <div className={styles.main}>
-            {chosenLink}
+            {componentToRender}
         </div>
     );
 }

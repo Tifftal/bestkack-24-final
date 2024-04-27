@@ -1,9 +1,10 @@
 import { TextInput, Button, Group, PinInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login, login_validate, test_one, test_three, test_two } from 'api/user/index';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login, loginValidate, test_three } from 'api/user/index';
+import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
 
 import styles from './LoginPage.module.scss';
@@ -15,45 +16,55 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
 
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
 
     const handleFormSubmit = async (values: any) => {
-        console.log(values);
         try {
-            const response = await login_validate(
+            // 1
+            const { status } = await loginValidate(
                 values.phone,
             )
 
-            if (response.status === 200) {
+            if (status === 200) {
                 setIsPin(true);
                 setPhone(values.phone);
             }
-        }
+        } catch ({ response }) {
+            const { data, status } = response;
 
-        catch (error) {
-            console.error(error)
+            dispatch(addNotification({
+                title: 'Ошибка',
+                status: status || undefined,
+                description: data?.message || 'Произошла ошибка при авторизации',
+                isOpen: true,
+            }))
         }
     };
 
     const Login = async () => {
+        // 2
         try {
-            const response = await login(
+            const { data, status } = await login(
                 phone,
                 pinCode
             )
 
-            if (response.data.jwtTokens) {
-                localStorage.setItem('atoken', response.data.jwtTokens.access);
-                localStorage.setItem('rtoken', response.data.jwtTokens.refresh);
+            if (status === 200 && data.jwtTokens) {
+                localStorage.setItem('atoken', data.jwtTokens.access);
+                localStorage.setItem('rtoken', data.jwtTokens.refresh);
             }
 
-            dispath(setUser(response.data));
+            dispatch(setUser(data));
             navigate('/');
-            console.log(response)
-        }
+        } catch ({ response }) {
+            const { data, status } = response;
 
-        catch (error) {
-            console.error(error)
+            dispatch(addNotification({
+                title: 'Ошибка',
+                status: status || undefined,
+                description: data?.message || 'Произошла ошибка при авторизации',
+                isOpen: true,
+            }))
         }
     }
 
@@ -77,9 +88,15 @@ const LoginPage = () => {
         try {
             const response = await test_three()
             console.log(response)
-        }
-        catch (error) {
-            console.error(error)
+        } catch ({ response }) {
+            const { data, status } = response;
+
+            dispatch(addNotification({
+                title: 'Ошибка',
+                status: status || undefined,
+                description: data?.message || 'Произошла ошибка при авторизации',
+                isOpen: true,
+            }))
         }
     }
 
