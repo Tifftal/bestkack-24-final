@@ -1,9 +1,9 @@
 import logo from 'assets/logo.png';
-import { Button, Group, Image, Text } from '@mantine/core';
+import { ActionIcon, Button, Group, Image, Text } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { IconLogout, IconUserCircle } from '@tabler/icons-react';
 
 import styles from './Navbar.module.scss';
-import { IconLogout } from '@tabler/icons-react';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -15,6 +15,9 @@ const Navbar = () => {
                     h={35}
                     src={logo}
                 />
+                <ActionIcon variant="light" radius="xl" aria-label="Settings">
+                    <IconUserCircle style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                </ActionIcon>
                 <Text fw={600} size='lg'>Варвара</Text>
             </Group>
             <Button

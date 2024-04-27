@@ -8,7 +8,6 @@ import { setUser } from 'store/UserSlice/UserSlice';
 
 import styles from './MainPage.module.scss';
 
-
 const MainPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
