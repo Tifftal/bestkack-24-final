@@ -238,12 +238,13 @@ const Shop = () => {
                     <GridCol key={idx} span={6}>
                         <Card
                             shadow="sm"
-                            padding="sm"
+                            padding="xs"
                             radius="md"
                             withBorder
                             styles={{
                                 root: {
-                                    minHeight: "100%",
+                                    maxHeight: "500px",
+                                    height: "275px",
                                     display: 'flex',
                                     flexDirection: 'column',
                                 }
@@ -252,13 +253,13 @@ const Shop = () => {
                             <Card.Section>
                                 <Image
                                     src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
-                                    height={100}
+                                    height={75}
                                     alt="Norway"
                                 />
                             </Card.Section>
 
                             <Group justify="space-between" mt="md" mb="xs">
-                                <Text fw={500}>{product.name || ''}</Text>
+                                <Text fw={500} size="sm">{product.name || ''}</Text>
                                 <Badge color="pink">{product.price} р.</Badge>
                             </Group>
 
