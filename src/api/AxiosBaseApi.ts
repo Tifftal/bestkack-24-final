@@ -40,6 +40,7 @@ apiInstance.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${response.access}`;
         return apiInstance(originalRequest);
       } catch (error) {
+        window.location.pathname = '/login';
         return Promise.reject(error);
       }
     }
@@ -47,6 +48,7 @@ apiInstance.interceptors.response.use(
     if (error.response.status === 403) {
       localStorage.removeItem('atoken');
       localStorage.removeItem('rtoken');
+      window.location.pathname = '/login';
     }
 
     if (error.response.status === 503) {

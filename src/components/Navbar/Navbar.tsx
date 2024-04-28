@@ -1,8 +1,9 @@
 import { ActionIcon, Button, Group, Image, Text } from '@mantine/core';
 import { IconLogout, IconUserCircle } from '@tabler/icons-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/logo.png';
+import { complete } from 'store/UserSlice/UserSlice';
 import { selectUserState } from 'store/UserSlice/userSelector';
 
 import styles from './Navbar.module.scss';
@@ -11,8 +12,10 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { pathname } = window.location;
     const user = useSelector(selectUserState);
+    const dispatch = useDispatch();
 
     const Logout = () => {
+        dispatch(complete());
         localStorage.removeItem('atoken');
         localStorage.removeItem('rtoken');
         navigate('/login');
