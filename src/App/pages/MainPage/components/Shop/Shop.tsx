@@ -150,6 +150,16 @@ const Shop = () => {
         return acc + amount * price;
     }, 0);
 
+    const getAmount = (id: string) => {
+        const product = cart.find(product => product.id === id);
+        if (product) {
+            console.log('AMOUNT', product.amount);
+            return product.amount;
+        } else {
+            return null;
+        }
+    };
+
     return (
         <>
             <div className={styles.filters}>
@@ -250,6 +260,8 @@ const Shop = () => {
                                     height: "275px",
                                     display: 'flex',
                                     flexDirection: 'column',
+                                    backgroundColor: '#EBEBEB',
+                                    border: 'none'
                                 }
                             }}
                         >
@@ -271,7 +283,17 @@ const Shop = () => {
 
                             <div style={{ flexGrow: 1 }} />
 
-                            <Button size='xs' onClick={() => { handleAddToCart(product) }} variant="light">В корзину</Button>
+                            {
+                                getAmount(product.id) === null ?
+                                    <Button styles={{ root: { fontSize: 15, color: 'black', fontWeight: 500, backgroundColor: 'white', borderRadius: 'calc(0.5rem * 1)', boxShadow: '0 0 5px rgba(0, 0, 0, 0.07)' } }} size='xs' onClick={() => { handleAddToCart(product) }} variant="transparent">В корзину</Button>
+                                    :
+                                    <div className={styles['cart-group']}>
+                                        <Button onClick={() => { handleRemoveFromCart(product.id) }} size="xs" variant="transparent" styles={{ root: { fontSize: 22, color: 'black', fontWeight: 500 } }}>-</Button>
+                                        <Text fw={500} size="lg">{getAmount(product.id)}</Text>
+                                        <Button onClick={() => { handleAddToCart(product) }} size="xs" variant="transparent" styles={{ root: { fontSize: 22, color: 'black', fontWeight: 500 } }}>+</Button>
+                                    </div>
+                            }
+
                         </Card>
                     </GridCol>
                 ))}
