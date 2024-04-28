@@ -19,7 +19,7 @@ const OtherCard: React.FC<OtherCardProps> = ({ title, Icon, color, description }
     <div>
       <UnstyledButton onClick={open} key={title} className={classes.item}>
         <Icon color={theme.colors[color][6]} size="2rem" />
-        <Text size="lg" mt={7}>
+        <Text size={title == 'Предложения партнеров' ? "md" : "lg"}  mt={7}>
           {title}
         </Text>
       </UnstyledButton>
