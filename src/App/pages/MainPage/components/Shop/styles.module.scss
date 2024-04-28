@@ -3,11 +3,23 @@
     bottom: 0;
     left: 0;
     right: 0;
-
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 75px;
+
+    &-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        align-self: center;
+        background-color: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.07);
+        width: 100%;
+        border-radius: calc(0.5rem * 1);
+    }
 }
 
 
@@ -74,14 +86,14 @@
 .icon-arrow-down {
     width: 24px;
     height: 24px;
-  
+
     transition: transform 0.5s ease-in-out;
 }
 
 .arrow-up {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .arrow-down {
-  transform: rotate(0deg);
+    transform: rotate(0deg);
 }

@@ -19,7 +19,10 @@ const initialState: Filter = {
     priceSort: true,
 };
 
-initialState.startTime.setDate(initialState.startTime.getDate() - 1);
+initialState.startTime.setHours(0);
+initialState.startTime.setMinutes(0);
+initialState.startTime.setSeconds(0);
+initialState.startTime.setMilliseconds(0);
 
 export const filterSlice = createSlice({
     name: 'filter',

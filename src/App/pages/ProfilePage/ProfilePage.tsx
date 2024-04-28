@@ -1,16 +1,16 @@
-import { Accordion, Avatar, Button, Card, Modal, TextInput } from '@mantine/core';
+import { Accordion, Avatar, Button, Card, Modal, TextInput , Text, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
+import { IconEdit , IconAt, IconPhoneCall } from '@tabler/icons-react';
 import { useEffect } from 'react';
 import { IconChessKing, IconEdit } from '@tabler/icons-react';
 import { Text, Group } from '@mantine/core';
 import { useSelector, useDispatch } from 'react-redux';
-import classes from './ProfilePage.module.scss';
-import { selectUserState } from 'store/UserSlice/userSelector';
-import { IconAt, IconPhoneCall } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
 import { UserInitials, me, updateUser } from 'api/user/index';
+import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
-import { selectAchievementState } from 'store/AchievementSlice/achievementSelector';
+import { selectUserState } from 'store/UserSlice/userSelector';
+import classes from './ProfilePage.module.scss';
 import Orders  from './components/Orders'
 
 
@@ -20,13 +20,23 @@ const ProfilePage = () => {
   const disapatch = useDispatch();
   useEffect(() => {
     me().then((response) => {
-      disapatch(setUser(response.data));
-    });
+      dispatch(setUser(response.data));
+    })
+      .catch(({ response }) => {
+        const { data, status } = response;
+
+        dispatch(addNotification({
+          title: 'Ошибка',
+          status: status || undefined,
+          description: data?.message || 'Произошла ошибка при авторизации',
+          isOpen: true,
+        }))
+      })
   }, []);
 
   const handleEdit = (values: UserInitials) => {
     updateUser(values).then((response) => {
-      disapatch(setUser(response.data));
+      dispatch(setUser(response.data));
     });
   };
 

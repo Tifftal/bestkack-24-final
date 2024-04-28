@@ -1,14 +1,16 @@
 import { Tabs, Text } from '@mantine/core';
-import { IconServer, IconDiscount, IconCategory, IconShoppingBag, IconCoffee, IconHome, IconQrcode, IconShoppingCart } from '@tabler/icons-react';
+import { IconCategory, IconShoppingBag, IconHome, IconQrcode, IconShoppingCart } from '@tabler/icons-react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setChosenLink } from 'store/NavigateSlice/NavigationSlice';
 import { selectNavigationState } from 'store/NavigateSlice/navigationSelector';
+import { selectIsUserAdmin } from 'store/UserSlice/userSelector';
 import styles from './Footer.module.scss';
 
 const Footer = () => {
     const dispatch = useDispatch();
     const chosenLink = useSelector(selectNavigationState);
+    const isUserAdmin = useSelector(selectIsUserAdmin);
 
     return (
         <div className={styles.footer}>
@@ -17,6 +19,11 @@ const Footer = () => {
                 classNames={styles}
                 value={chosenLink}
                 onChange={(value: any) => dispatch(setChosenLink(value))}
+                styles={{
+                    tab: {
+                        width: '50px'
+                    }
+                }}
             >
                 <Tabs.List grow>
                     <Tabs.Tab
@@ -34,45 +41,23 @@ const Footer = () => {
                     <Tabs.Tab
                         value="shop"
                     >
-                        <IconShoppingCart style={{width: 20, height: 20}} />
+                        <IconShoppingCart style={{ width: 20, height: 20 }} />
                         <Text fw={600} size='9px' mt='5px'>Магазин</Text>
                     </Tabs.Tab>
-                    <Tabs.Tab
-                        value="product"
-                    >
-                        <IconShoppingBag style={{ width: 20, height: 20 }} />
-                        <Text fw={600} size='9px' mt='5px'>Продукт дня</Text>
-                    </Tabs.Tab>
+                    {isUserAdmin && (
+                        <Tabs.Tab
+                            value="product"
+                        >
+                            <IconShoppingBag style={{ width: 20, height: 20 }} />
+                            <Text fw={600} size='9px' mt='5px'>Продукт дня</Text>
+                        </Tabs.Tab>
+                    )}
                     <Tabs.Tab
                         value="other"
                     >
                         <IconCategory style={{ width: 20, height: 20 }} />
                         <Text fw={600} size='9px' mt='5px'>Другое</Text>
                     </Tabs.Tab>
-                    {/* <Tabs.Tab
-                        value="sale"
-                    >
-                        <IconDiscount style={{ width: 20, height: 20 }} />
-                        <Text fw={600} size='9px' mt='5px'>Акции</Text>
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value="service"
-                    >
-                        <IconServer style={{ width: 20, height: 20 }} />
-                        <Text fw={600} size='9px' mt='5px'>Сервисы</Text>
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value="coffee"
-                    >
-                        <IconCoffee style={{ width: 20, height: 20 }} />
-                        <Text fw={600} size='9px' mt='5px'>Кофе</Text>
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value="offers"
-                    >
-                        <IconFileCheck style={{ width: 20, height: 20 }} />
-                        <Text fw={600} size='9px' mt='5px'>Предложения</Text>
-                    </Tabs.Tab> */}
                 </Tabs.List>
             </Tabs>
         </div >

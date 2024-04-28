@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { me } from 'api/user/index';
 import { selectNavigationState } from 'store/NavigateSlice/navigationSelector';
+import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
 import Main from './components/Main';
-import Product from './components/Product';
 import Other from './components/Other'
+import Product from './components/Product';
 import QR from './components/QR';
 import Shop from './components/Shop';
 
@@ -22,9 +23,23 @@ const MainPage = () => {
         if (!localStorage.getItem('atoken')) {
             navigate('/login');
         }
-        me().then((res) => {
-            dispatch(setUser(res.data))
-        });
+        me()
+            .then(({ data, status }) => {
+                if (status === 200) {
+                    dispatch(setUser(data))
+                }
+
+            })
+            .catch(({ response }) => {
+                const { data, status } = response;
+
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: data?.message || 'Произошла ошибка при получении данных',
+                    isOpen: true,
+                }))
+            })
     }, []);
 
     useEffect(() => {

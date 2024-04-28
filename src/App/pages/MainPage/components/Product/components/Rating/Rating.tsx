@@ -15,6 +15,9 @@ import { setProducts } from 'store/ProductsSlice/ProductsSlice';
 import styles from './Rating.module.scss';
 
 const Rating = () => {
+    const colors = ['dark.6', 'gray.6', 'red.6', 'pink.6', 'grape.6', 'violet.6', 'indigo.6', 'blue.6', 'cyan.6', 'teal.6',
+        'green.6', 'lime.6', 'yellow.6', 'orange.6', '#C91A52', '#099CFF', '#F05518', '#6D4B40', '#F018F0', '#9E0419']
+
     const [regions, setRegions] = useState<string[]>([]);
     const [data, setData] = useState([]);
 
@@ -34,15 +37,13 @@ const Rating = () => {
     }, [])
 
     useEffect(() => {
-        console.log("HERE")
         getProducts({
             startTime: format(filter.startTime, 'yyyy-MM-dd HH:mm:ss.SS'),
             endTime: format(filter.endTime, 'yyyy-MM-dd HH:mm:ss.SS'),
             region: filter.region
         })
             .then(response => {
-                console.log(response);
-                const formattedData = response.data.map((item) => ({
+                const formattedData = response.data.map((item: any) => ({
                     name: item.product.name,
                     Стоимость: item.totalSpend,
                 }));
@@ -80,7 +81,7 @@ const Rating = () => {
 
     return (
         <div className={styles.rating}>
-            <Accordion defaultValue="Apples" chevron={<></>} classNames={styles}>
+            <Accordion defaultValue="filters" classNames={styles}>
                 <Accordion.Item key='filters' value='filters'>
                     <Accordion.Control icon={<IconAdjustmentsHorizontal width={18} height={18} />}>Фильтры</Accordion.Control>
                     <Accordion.Panel>

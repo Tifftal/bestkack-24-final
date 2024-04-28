@@ -72,6 +72,8 @@ const Shop = () => {
             }]
         }, []);
 
+        console.log('CART', formattedCart)
+
         try {
             await addToCart(formattedCart);
         } catch ({ response }) {
@@ -130,6 +132,7 @@ const Shop = () => {
                 }));
 
                 dispatch(complete())
+                close()
             }
         } catch ({ response }) {
             const { data, status } = response;
@@ -146,6 +149,16 @@ const Shop = () => {
     const totalAmount = cart.reduce((acc, { amount, price }) => {
         return acc + amount * price;
     }, 0);
+
+    const getAmount = (id: string) => {
+        const product = cart.find(product => product.id === id);
+        if (product) {
+            console.log('AMOUNT', product.amount);
+            return product.amount;
+        } else {
+            return null;
+        }
+    };
 
     return (
         <>
@@ -247,6 +260,8 @@ const Shop = () => {
                                     height: "275px",
                                     display: 'flex',
                                     flexDirection: 'column',
+                                    backgroundColor: '#EBEBEB',
+                                    border: 'none'
                                 }
                             }}
                         >
@@ -258,25 +273,33 @@ const Shop = () => {
                                 />
                             </Card.Section>
 
-                            <Group justify="space-between" mt="md" mb="xs">
-                                <Text fw={500} size="sm">{product.name || ''}</Text>
-                                <Badge color="pink">{product.price} р.</Badge>
-                            </Group>
+                            <Text fw={500} size="md" mt='md'>{product.name || ''}</Text>
 
                             <Text size="sm" c="dimmed">
                                 {product.description || ''}
                             </Text>
 
+                            <Text fw={600} size="md" mt='sm'>{product.price || ''} руб.</Text>
+
                             <div style={{ flexGrow: 1 }} />
 
-                            <Button size='xs' onClick={() => { handleAddToCart(product) }} variant="light">В корзину</Button>
+                            {
+                                getAmount(product.id) === null ?
+                                    <Button styles={{ root: { fontSize: 15, color: 'black', fontWeight: 500, backgroundColor: 'white', borderRadius: 'calc(0.5rem * 1)', boxShadow: '0 0 5px rgba(0, 0, 0, 0.07)' } }} size='xs' onClick={() => { handleAddToCart(product) }} variant="transparent">В корзину</Button>
+                                    :
+                                    <div className={styles['cart-group']}>
+                                        <Button onClick={() => { handleRemoveFromCart(product.id) }} size="xs" variant="transparent" styles={{ root: { fontSize: 22, color: 'black', fontWeight: 500 } }}>-</Button>
+                                        <Text fw={500} size="lg">{getAmount(product.id)}</Text>
+                                        <Button onClick={() => { handleAddToCart(product) }} size="xs" variant="transparent" styles={{ root: { fontSize: 22, color: 'black', fontWeight: 500 } }}>+</Button>
+                                    </div>
+                            }
+
                         </Card>
                     </GridCol>
                 ))}
 
                 {cart.length > 0 && (
                     <Button
-
                         onClick={open}
                         className={styles.cart}
                         size='xl'
