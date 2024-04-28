@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import LoginPage from 'App/pages/LoginPage'
 import MainPage from 'App/pages/MainPage'
 import ProfilePage from 'App/pages/ProfilePage';
