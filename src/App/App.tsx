@@ -17,7 +17,7 @@ function App() {
             <Route path='/' element={<><Navbar /><MainPage /><Footer /></>} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/registration' element={<RegistrationPage />} />
-            <Route path='/profile' element={<><Navbar /><ProfilePage /><Footer /></>} />
+            <Route path='/profile' element={<><Navbar /><ProfilePage /></>} />
           </Routes>
         </BrowserRouter>
       </NotificationWrapper>

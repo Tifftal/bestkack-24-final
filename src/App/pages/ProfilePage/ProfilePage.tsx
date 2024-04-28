@@ -19,7 +19,6 @@ const ProfilePage = () => {
       disapatch(setUser(response.data));
     });
   }, []);
-  //   const [user, setUser] = useState();
 
   const handleEdit = (values: UserInitials) => {
     updateUser(values).then((response) => {

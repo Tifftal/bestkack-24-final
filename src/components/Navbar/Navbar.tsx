@@ -9,7 +9,7 @@ import styles from './Navbar.module.scss';
 
 const Navbar = () => {
     const navigate = useNavigate();
-
+    const { pathname } = window.location;
     const user = useSelector(selectUserState);
 
     const Logout = () => {
@@ -26,14 +26,24 @@ const Navbar = () => {
                     h={35}
                     src={logo}
                 />
-                <ActionIcon variant="transparent" radius="xl" aria-label="Settings">
-                    <IconUserCircle
-                        size={60}
-                        onClick={() => navigate('/profile')}
-                        // style={{ width: '70%', height: '70%' }} 
-                        stroke={1.5} />
-                </ActionIcon>
-                <Text fw={600} size='lg'>{user.name}</Text>
+                {pathname !== "/profile" ? (
+                    <>
+                        <ActionIcon variant="transparent" radius="xl" aria-label="Settings">
+                            <IconUserCircle
+                                size={60}
+                                onClick={() => navigate('/profile')}
+                                stroke={1.5} />
+                        </ActionIcon>
+                        <Text fw={600} size='lg'>{user.name}</Text>
+                    </>
+                ) : (
+                    <Button
+                    size='xs'
+                        onClick={() => { navigate('/') }}
+                    >
+                        На главную
+                    </Button>
+                )}
             </Group>
             <Button
                 variant='light'
