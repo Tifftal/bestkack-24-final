@@ -216,7 +216,7 @@ const Shop = () => {
     };
 
     return (
-        <>
+        <div className={styles.shop}>
             <div className={styles.filters}>
                 <Input
                     style={{ margin: '20px 0', width: "90%" }}
@@ -232,7 +232,7 @@ const Shop = () => {
                 />
             </div>
 
-            <Grid style={{ paddingBottom: "70px" }}>
+            <Grid style={{ paddingBottom: "140px" }}>
                 <Modal
                     opened={opened && (cart.length > 0)}
                     onClose={close}
@@ -383,7 +383,7 @@ const Shop = () => {
                     </Button>
                 )}
             </Grid>
-        </>
+        </div>
     )
 }
 
