@@ -1,86 +1,32 @@
-import { Accordion, Card, Select, Text } from '@mantine/core';
+import { Accordion, ActionIcon, Card, Select, Text } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { getOrders } from 'api/products/index';
+import { IconArrowUp, IconArrowDown } from '@tabler/icons-react';
 
 const formatedDate = (date: string) => {
-    const d = new Date(date);
-    return d.toLocaleDateString();
-    };
+  const d = new Date(date);
+  return d.toLocaleDateString();
+};
 
 const Orders = () => {
-  const [select, setSelect] = useState<string | null>(null);
-    
-    const [orders, setOrders] = useState([]);
-    useEffect(() => {
-        getOrders(select).then((response) => {
-            setOrders(response.data.content);
-            console.log(response.data.content);
-        });
-    }, [select]);
+  const [selectedSort, setSelectedSort] = useState<string>('desc');
 
-  //   const orders = [
-//     {
-//       id: '0',
-//       orderTime: '2021-10-10T02:00:00.000Z',
-//       productOrders: [
-//         {
-//           product: {
-//             id: '0',
-//             name: 'product name',
-//             price: 100,
-//             description: 'product description',
-//           },
-//           amount: 2,
-//           totalPrice: 200,
-//         },
-//         {
-//           product: {
-//             id: '1',
-//             name: 'product name',
-//             price: 100,
-//             description: 'product description',
-//           },
-//           amount: 2,
-//           totalPrice: 200,
-//         },
-//       ],
-//     },
-//     {
-//       id: '1',
-//       orderTime: '2021-10-10T02:00:00.000Z',
-//       productOrders: [
-//         {
-//           product: {
-//             id: '0',
-//             name: 'product name',
-//             price: 100,
-//             description: 'product description',
-//           },
-//           amount: 2,
-//           totalPrice: 200,
-//         },
-//         {
-//           product: {
-//             id: '1',
-//             name: 'product name',
-//             price: 100,
-//             description: 'product description',
-//           },
-//           amount: 2,
-//           totalPrice: 200,
-//         },
-//       ],
-//     },
-//   ];
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    getOrders(selectedSort).then((response) => {
+      setOrders(response.data.content);
+      console.log(response.data.content);
+    });
+  }, [selectedSort]);
 
-  const items = orders.map((order) => (
-    <Card mt={10} withBorder>
+  const items = orders.map((order, index) => (
+    <Card key={index} mt={10} withBorder>
       <Accordion.Item key={order.id} value={order.orderTime}>
         <Accordion.Control>{formatedDate(order.orderTime)}</Accordion.Control>
         <Accordion.Panel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {order.productOrders.map((productOrder) => (
-              <Card withBorder>
+          <div key={order.id} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {order.productOrders.map((productOrder, indexP) => (
+              <Card key={indexP} withBorder>
                 <Text size="xl" fs={700}>
                   {productOrder.product.name}
                 </Text>
@@ -104,26 +50,25 @@ const Orders = () => {
         display: 'flex',
         flexDirection: 'column',
         gap: '10px',
+        marginTop: '10px'
       }}
     >
       <Text fz="xl" fw={700} mt={20}>
         История покупок
       </Text>
-      <Text fs={500}>Сортировать по дате заказа</Text>
-      <Select
-        data={['По возрастанию', 'По убыванию']}
-        placeholder="Выберите способ сортировки"
-        value={select ? select : null}
-        onChange={(value) => {
-            setSelect(value)}
-        }
-        style={{ width: '200px', margin: '0 10px' }}
-      />
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text fw={500}>Сортировать по дате заказа</Text>
+        <ActionIcon variant="transparent" aria-label="Settings" onClick={() => setSelectedSort(state => state === 'desc' ? 'asc' : 'desc')}>
+          {
+            selectedSort === 'desc' ?
+              <IconArrowUp style={{ width: '100%', height: '100%' }} stroke={1.5} />
+              : <IconArrowDown style={{ width: '100%', height: '100%' }} stroke={1.5} />
+          }
+        </ActionIcon>
+      </div>
       <Accordion
         variant="separeted"
-        style={{
-          padding: '0 20px',
-        }}
+        styles={{ content: { padding: 0, margin: 0 } }}
       >
         {items}
       </Accordion>

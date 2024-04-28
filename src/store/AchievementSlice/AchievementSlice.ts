@@ -4,13 +4,17 @@ import { createReduxHookFactory } from '../createReduxHookFactory';
 import { SliceActions } from '../sliceActions';
 
 export type AchievementType = {
-  image: string;
-  status: string;
+  id: number,
+  name: string;
+  value: number;
+  icon: string;
 };
 
 const initialState: AchievementType = {
-  image: '',
-  status: '',
+  id: 0,
+  name: '',
+  value: 0,
+  icon: '',
 };
 
 export const achievementSlice = createSlice({
@@ -18,19 +22,14 @@ export const achievementSlice = createSlice({
   initialState,
   reducers: {
     setAchievement: (state, action: PayloadAction<AchievementType>) => {
-      state.image = action.payload.image;
-      state.status = action.payload.status;
-    },
-    setAchievementStatus: (state, action: PayloadAction<string>) => {
-      state.status = action.payload;
-    },
-    setAchievementImage: (state, action: PayloadAction<string>) => {
-      state.image = action.payload;
-    },
+      state.icon = action.payload.icon;
+      state.name = action.payload.name;
+      state.value = action.payload.value;
+    }
   },
 });
 
-export const { setAchievement, setAchievementStatus, setAchievementImage } = achievementSlice.actions;
+export const { setAchievement } = achievementSlice.actions;
 
 export const achievementReducer = achievementSlice.reducer;
 
