@@ -44,7 +44,7 @@ const Graph = () => {
 
     const getGraph = async () => {
         const dividedTimeRange = divideTimeRange(filter.startTime, filter.endTime);
-        console.log("RANGE", dividedTimeRange)
+        // console.log("RANGE", dividedTimeRange)
 
         for (let i = 0; i < dividedTimeRange.length; i++) {
             try {
@@ -54,13 +54,13 @@ const Graph = () => {
                     region: filter.region
                 })
 
-                console.log("RESP", response);
+                // console.log("RESP", response);
                 const data = response.data;
-                console.log("PRODUCT SELECTED", selectedProduct)
+                // console.log("PRODUCT SELECTED", selectedProduct)
                 const result = data.reduce((acc: any, item: any) => {
                     if (!selectedProduct.includes(item.product.name)) {
                         acc[item.product.name] = item.totalSpend;
-                        console.log(i)
+                        // console.log(i)
                         return acc;
                     } else {
                         acc[''] = 0
@@ -71,7 +71,7 @@ const Graph = () => {
                 const hasData = Object.keys(result).length > 1;
 
                 if (hasData) {
-                    console.log("RESULT", result);
+                    // console.log("RESULT", result);
                     setData(state => [...state, result]);
                 }
 
@@ -128,7 +128,7 @@ const Graph = () => {
 
     const handleMultiSelectChange = (selected: string[]) => {
         setSelectedProduct(selected);
-        console.log(selected)
+        // console.log(selected)
     };
 
     return (

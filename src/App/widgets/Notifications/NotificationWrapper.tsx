@@ -1,4 +1,5 @@
-import { Notification } from "@mantine/core";
+import { Notification, rem } from "@mantine/core";
+import { IconX, IconCheck } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeNotification } from "store/NotificationSlice/NotificationSlice";
@@ -14,6 +15,9 @@ const NotificationWrapper: React.FC<Props> = ({ children }) => {
     const handleCloseMessage = (idx: number) => {
         dispatch(closeNotification(idx));
     }
+
+    const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
+    const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
 
     useEffect(() => {
         const tiemoutIds: NodeJS.Timeout[] = [];
@@ -41,6 +45,8 @@ const NotificationWrapper: React.FC<Props> = ({ children }) => {
                             key={idx}
                         >
                             <Notification
+                                icon={notification.title === 'Успешно' ? checkIcon : xIcon}
+                                color={notification.title === 'Успешно' ? 'teal' : 'red'}
                                 onClose={() => handleCloseMessage(idx)}
                                 title={notification.title || ''}
                             >

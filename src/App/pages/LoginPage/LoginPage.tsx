@@ -32,10 +32,11 @@ const LoginPage = () => {
             }
         } catch ({ response }) {
             const { data, status } = response;
-            if(data?.message === 'Phone number not exists') {
-                navigate('/registration');
+
+            if (status === 409 && data.message.startsWith("Номер телефона не")) {
+                navigate('/registration')
             }
-            console.log(data, status);
+
             dispatch(addNotification({
                 title: 'Ошибка',
                 status: status || undefined,

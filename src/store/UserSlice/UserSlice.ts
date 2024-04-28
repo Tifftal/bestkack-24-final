@@ -57,7 +57,7 @@ export const userSlice = createSlice({
         addProductToCart: (state, action: PayloadAction<CartType>) => {
             const { products } = state;
 
-            console.log(action.payload);
+            // console.log(action.payload);
 
             const existingProductIndex = products.findIndex(({ id }) => id === action.payload.id);
 
@@ -66,7 +66,7 @@ export const userSlice = createSlice({
 
                 existingProduct.amount += 1;
             } else {
-                products.push({...action.payload, amount: 1});
+                products.push({ ...action.payload, amount: 1 });
             }
         },
         removeProductFromCart: (state, action: PayloadAction<string>) => {
@@ -81,7 +81,7 @@ export const userSlice = createSlice({
 
                 if (existingProduct.amount === 0) {
                     products.splice(existingProductIndex, 1);
-                }        
+                }
             }
         },
         setRegion: (state, action: PayloadAction<string | null>) => {

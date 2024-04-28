@@ -10,31 +10,53 @@ const formatedDate = (date: string) => {
 
 const Orders = () => {
   const [selectedSort, setSelectedSort] = useState<string>('desc');
-
+  const [page, setPage] = useState(0);
   const [orders, setOrders] = useState([]);
+  const [totalPages, setTotalPages] = useState(Infinity);
+
+
   useEffect(() => {
-    getOrders(selectedSort).then((response) => {
-      setOrders(response.data.content);
-      console.log(response.data.content);
-    });
-  }, [selectedSort]);
+    if (page < totalPages) {
+      const loadOrders = async () => {
+        try {
+          const response = await getOrders(selectedSort, page);
+          setTotalPages(response.data.totalPages)
+          const newOrders = response.data.content;
+          setOrders(prevOrders => [...prevOrders, ...newOrders]);
+        } catch (error) {
+          console.error("Error loading orders:", error);
+        }
+      };
+
+      loadOrders();
+    }
+  }, [selectedSort, page]);
+
+  const loadNextPage = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+
+  window.onscroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+      loadNextPage();
+    }
+  };
 
   const items = orders.map((order, index) => (
     <Card key={index} mt={10} withBorder>
       <Accordion.Item key={order.id} value={order.orderTime}>
-        <Accordion.Control>{formatedDate(order.orderTime)}</Accordion.Control>
+        <Accordion.Control>Покупка от <b style={{ fontWeight: 600 }}>{formatedDate(order.orderTime)}</b></Accordion.Control>
         <Accordion.Panel>
           <div key={order.id} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {order.productOrders.map((productOrder, indexP) => (
-              <Card key={indexP} withBorder>
-                <Text size="xl" fs={700}>
+              <Card key={indexP} styles={{ root: { backgroundColor: '#EBEBEB' } }}>
+                <Text size="lg" fw={600}>
                   {productOrder.product.name}
                 </Text>
-                {/* <Text>Цена: {productOrder.product.price} руб.</Text>
-              <Text>Количество: {productOrder.amount}</Text> */}
+                <Text>Цена: {productOrder.product.price} руб.</Text>
+                <Text>Количество: {productOrder.amount}</Text>
                 <Text>
-                  Общая стоимость: {productOrder.product.price}руб x {productOrder.amount} = {productOrder.totalPrice}{' '}
-                  руб.
+                  Общая стоимость: {productOrder.totalPrice}{' '} руб.
                 </Text>
               </Card>
             ))}
