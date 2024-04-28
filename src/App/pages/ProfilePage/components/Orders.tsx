@@ -9,7 +9,6 @@ const formatedDate = (date: string) => {
 };
 
 const Orders = () => {
-  const [selectedSort, setSelectedSort] = useState<string>('desc');
   const [page, setPage] = useState(0);
   const [orders, setOrders] = useState([]);
   const [totalPages, setTotalPages] = useState(Infinity);
@@ -19,7 +18,7 @@ const Orders = () => {
     if (page < totalPages) {
       const loadOrders = async () => {
         try {
-          const response = await getOrders(selectedSort, page);
+          const response = await getOrders('desc', page);
           setTotalPages(response.data.totalPages)
           const newOrders = response.data.content;
           setOrders(prevOrders => [...prevOrders, ...newOrders]);
@@ -30,7 +29,7 @@ const Orders = () => {
 
       loadOrders();
     }
-  }, [selectedSort, page]);
+  }, [ page]);
 
   const loadNextPage = () => {
     setPage(prevPage => prevPage + 1);
@@ -78,16 +77,6 @@ const Orders = () => {
       <Text fz="xl" fw={700} mt={20}>
         История покупок
       </Text>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Text fw={500}>Сортировать по дате заказа</Text>
-        <ActionIcon variant="transparent" aria-label="Settings" onClick={() => setSelectedSort(state => state === 'desc' ? 'asc' : 'desc')}>
-          {
-            selectedSort === 'desc' ?
-              <IconArrowUp style={{ width: '100%', height: '100%' }} stroke={1.5} />
-              : <IconArrowDown style={{ width: '100%', height: '100%' }} stroke={1.5} />
-          }
-        </ActionIcon>
-      </div>
       <Accordion
         variant="separeted"
         styles={{ content: { padding: 0, margin: 0 } }}

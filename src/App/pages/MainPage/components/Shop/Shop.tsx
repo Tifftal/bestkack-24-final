@@ -322,7 +322,7 @@ const Shop = () => {
                         >
                             <Card.Section>
                                 <Image
-                                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+                                    src="https://ss.sport-express.ru/userfiles/materials/190/1907603/volga.jpg"
                                     height={75}
                                     alt="Norway"
                                 />
