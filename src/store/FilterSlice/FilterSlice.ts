@@ -6,13 +6,17 @@ import { SliceActions } from "../sliceActions";
 type Filter = {
     startTime: Date,
     endTime: Date,
-    region: string
+    region: string,
+    searchPattern: string,
+    priceSort: boolean,
 }
 
 const initialState: Filter = {
     startTime: new Date(),
     endTime: new Date(),
-    region: ''
+    region: '',
+    searchPattern: '',
+    priceSort: true,
 };
 
 initialState.startTime.setDate(initialState.startTime.getDate() - 1);
@@ -29,6 +33,12 @@ export const filterSlice = createSlice({
         },
         setRegion: (state, action: PayloadAction<string>) => {
             state.region = action.payload;
+        },
+        setSearchPattern: (state, action: PayloadAction<string>) => {
+            state.searchPattern = action.payload;
+        },
+        setPriceSort: (state, action: PayloadAction<boolean>) => {
+            state.priceSort = action.payload;
         }
     }
 })
@@ -36,7 +46,9 @@ export const filterSlice = createSlice({
 export const {
     setStartTime,
     setEndTime,
-    setRegion
+    setRegion,
+    setSearchPattern,
+    setPriceSort,
 } = filterSlice.actions;
 
 export const filterReducer = filterSlice.reducer;

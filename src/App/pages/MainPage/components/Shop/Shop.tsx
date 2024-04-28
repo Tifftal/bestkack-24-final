@@ -1,9 +1,11 @@
-import { Button, Card, Container, Grid, GridCol, Group, Image, Input, Modal, Select, Table, Text } from "@mantine/core";
+import { Badge, Button, Card, Container, Grid, GridCol, Group, Image, Input, Modal, Select, Table, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconX } from "@tabler/icons-react";
+import { IconX, IconArrowDown } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, completeShopping, getProductsList, getRegions } from "api/products/index";
+import { setPriceSort, setSearchPattern } from "store/FilterSlice/FilterSlice";
+import { selectShopFilters } from "store/FilterSlice/filterSelector";
 import { addNotification } from "store/NotificationSlice/NotificationSlice";
 import { setProductsList } from "store/ProductsSlice/ProductsSlice";
 import { selectProductsList } from "store/ProductsSlice/productSelector";
@@ -14,18 +16,18 @@ import { selectUserCart, selectUsersRegion } from "store/UserSlice/userSelector"
 import styles from "./styles.module.scss";
 
 const Shop = () => {
-    const [pattern, setPattern] = useState('');
     const [regions, setRegions] = useState([]);
     const [opened, { open, close }] = useDisclosure(false);
 
     const products = useSelector(selectProductsList);
     const cart = useSelector(selectUserCart);
     const region = useSelector(selectUsersRegion);
+    const { searchPattern, priceSort } = useSelector(selectShopFilters);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getProductsList(pattern)
+        getProductsList(searchPattern, priceSort)
             .then(({ data, status }) => {
                 if (status === 200) {
                     dispatch(setProductsList(data))
@@ -58,7 +60,7 @@ const Shop = () => {
                     isOpen: true,
                 }))
             })
-    }, [pattern]);
+    }, [searchPattern, priceSort]);
 
     const handleAddToCart = async (product: ProductType) => {
         dispatch(addProductToCart(product));
@@ -111,6 +113,10 @@ const Shop = () => {
         dispatch(setRegion(region));
     }
 
+    const handleSetSearchPattern = (pattern: string) => {
+        dispatch(setSearchPattern(pattern))
+    }
+
     const handleCompleteShopping = async () => {
         try {
             const { status } = await completeShopping(region);
@@ -143,11 +149,20 @@ const Shop = () => {
 
     return (
         <>
-            <Input
-                style={{ margin: '10px 0 20px' }}
-                placeholder="Поиск"
-                onChange={(e) => setPattern(e.target.value)}
-            />
+            <div className={styles.filters}>
+                <Input
+                    style={{ margin: '20px 0', width: "90%" }}
+                    placeholder="Поиск"
+                    value={searchPattern}
+                    onChange={(e) => handleSetSearchPattern(e.target.value)}
+                />
+                <IconArrowDown
+                    width={24}
+                    height={24}
+                    className={`icon-arrow-down ${priceSort ? styles['arrow-up'] : styles['arrow-down']}`}
+                    onClick={() => dispatch(setPriceSort(!priceSort))}
+                />
+            </div>
 
             <Grid style={{ paddingBottom: "70px" }}>
                 <Modal
@@ -195,7 +210,7 @@ const Shop = () => {
                             data={regions || []}
                             value={region}
                             onChange={handleSetRegion}
-                            style={{marginTop: '20px'}}
+                            style={{ marginTop: '20px' }}
                         />
 
                         <Button
@@ -244,6 +259,7 @@ const Shop = () => {
 
                             <Group justify="space-between" mt="md" mb="xs">
                                 <Text fw={500}>{product.name || ''}</Text>
+                                <Badge color="pink">{product.price} р.</Badge>
                             </Group>
 
                             <Text size="sm" c="dimmed">
