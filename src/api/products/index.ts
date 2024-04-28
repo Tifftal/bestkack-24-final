@@ -13,8 +13,6 @@ export const getProducts = async ({ startTime, endTime, region }: { startTime?: 
         URL += `&region=${region}`
     }
 
-    console.log(URL)
-
     return await apiInstance.get(URL);
 }
 

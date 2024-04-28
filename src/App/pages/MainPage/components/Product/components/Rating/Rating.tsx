@@ -10,14 +10,9 @@ import { setEndTime, setRegion, setStartTime } from 'store/FilterSlice/FilterSli
 import { DateValue } from '@mantine/dates';
 import { selectProducts } from 'store/ProductsSlice/productSelector';
 import { format } from 'date-fns';
+import { setProducts } from 'store/ProductsSlice/ProductsSlice';
 
 import styles from './Rating.module.scss';
-
-type Filter = {
-    startTime: Date,
-    endTime: Date,
-    regions: string
-}
 
 const Rating = () => {
     const [regions, setRegions] = useState<string[]>([]);
@@ -38,27 +33,19 @@ const Rating = () => {
     }, [])
 
     useEffect(() => {
-        console.log("TIME", filter.startTime, filter.endTime)
         getProducts({
             startTime: format(filter.startTime, 'yyyy-MM-dd HH:mm:ss.SS'),
             endTime: format(filter.endTime, 'yyyy-MM-dd HH:mm:ss.SS'),
             region: filter.region
         })
             .then(response => {
-                console.log(response)
+                // console.log(response)
+                dispatch(setProducts(response.data))
             })
             .catch(error => {
                 console.error(error)
             })
     }, [filter])
-
-    const elements = [
-        { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-        { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-        { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-        { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-        { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-    ];
 
     const data = [
         { month: 'January', Smartphones: 1200, Laptops: 900, Tablets: 200 },
@@ -76,19 +63,17 @@ const Rating = () => {
     const handleStartTimeChange = (value: DateValue) => {
         if (value instanceof Date) {
             dispatch(setStartTime(value))
-            console.log('Выбранная дата и время:', value);
         }
     };
 
     const handleEndTimeChange = (value: DateValue) => {
         if (value instanceof Date) {
             dispatch(setEndTime(value))
-            console.log('Выбранная дата и время:', value);
         }
     };
 
     return (
-        <>
+        <div className={styles.rating}>
             <Accordion defaultValue="Apples" chevron={<></>} classNames={styles}>
                 <Accordion.Item key='filters' value='filters'>
                     <Accordion.Control icon={<IconAdjustmentsHorizontal width={18} height={18} />}>Фильтры</Accordion.Control>
@@ -133,22 +118,20 @@ const Rating = () => {
                         <Table.Th>Название</Table.Th>
                         <Table.Th>Кол-во</Table.Th>
                         <Table.Th>Стоимость</Table.Th>
-                        <Table.Th>Регион</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{
-                    elements.map((element) => (
-                        <Table.Tr key={element.name}>
-                            <Table.Td>{element.position}</Table.Td>
-                            <Table.Td>{element.name}</Table.Td>
-                            <Table.Td>{element.symbol}</Table.Td>
-                            <Table.Td>{element.mass}</Table.Td>
+                    products.map((element) => (
+                        <Table.Tr key={element.product.id}>
+                            <Table.Td>{element.product.name}</Table.Td>
+                            <Table.Td>{element.amount}</Table.Td>
+                            <Table.Td>{element.totalSpend}</Table.Td>
                         </Table.Tr>
                     ))
                 }
                 </Table.Tbody>
             </Table>
-        </>
+        </div>
     )
 }
 

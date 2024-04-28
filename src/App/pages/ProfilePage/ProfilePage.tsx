@@ -21,11 +21,11 @@ const ProfilePage = () => {
   }, []);
   //   const [user, setUser] = useState();
 
-    const handleEdit = (values: UserInitials) => {
-        updateUser(values).then((response) => {
-        disapatch(setUser(response.data));
-        });
-    };
+  const handleEdit = (values: UserInitials) => {
+    updateUser(values).then((response) => {
+      disapatch(setUser(response.data));
+    });
+  };
 
   const [opened, { open, close }] = useDisclosure();
 
@@ -47,14 +47,15 @@ const ProfilePage = () => {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        marginTop: '50px',
+        width: '100%',
+        padding: '30px'
       }}
     >
       <Group wrap="nowrap">
         <Avatar size={90} radius="md" />
         <div>
-          <Group>
-            <Text fz="md" fw={500} className={classes.name}>
+          <Group wrap="nowrap">
+            <Text fz="lg" fw={600} className={classes.name}>
               {user.surname} {user.name} {user.middleName}
             </Text>
             <IconEdit onClick={open} size="20px" className={classes.icon} />
