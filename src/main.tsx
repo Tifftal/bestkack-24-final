@@ -8,6 +8,7 @@ import { store } from './store/store.ts';
 
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/charts/styles.css';
 import 'styles/style.scss'
 
 const theme = createTheme({

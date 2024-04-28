@@ -1,4 +1,4 @@
-import { Accordion, Button, Select, Table } from '@mantine/core';
+import { Accordion, Select, Table } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconChartBar } from '@tabler/icons-react';
 import { BarChart } from '@mantine/charts';
 import TimePicker from '../TimePicker/TimePicker';
@@ -16,6 +16,7 @@ import styles from './Rating.module.scss';
 
 const Rating = () => {
     const [regions, setRegions] = useState<string[]>([]);
+    const [data, setData] = useState([]);
 
     const dispatch = useDispatch();
 
@@ -33,26 +34,31 @@ const Rating = () => {
     }, [])
 
     useEffect(() => {
+        console.log("HERE")
         getProducts({
             startTime: format(filter.startTime, 'yyyy-MM-dd HH:mm:ss.SS'),
             endTime: format(filter.endTime, 'yyyy-MM-dd HH:mm:ss.SS'),
             region: filter.region
         })
             .then(response => {
-                // console.log(response)
-                dispatch(setProducts(response.data))
+                console.log(response);
+                const formattedData = response.data.map((item) => ({
+                    name: item.product.name,
+                    Стоимость: item.totalSpend,
+                }));
+
+                console.log("DATA", formattedData);
+
+                setData(formattedData);
+
+                dispatch(setProducts(response.data));
             })
             .catch(error => {
                 console.error(error)
             })
-    }, [filter])
 
-    const data = [
-        { month: 'January', Smartphones: 1200, Laptops: 900, Tablets: 200 },
-        { month: 'February', Smartphones: 1900, Laptops: 1200, Tablets: 400 },
-        { month: 'March', Smartphones: 400, Laptops: 1000, Tablets: 200 },
-        { month: 'April', Smartphones: 1000, Laptops: 200, Tablets: 800 },
-    ];
+
+    }, [filter])
 
     const handleSelectChange = (value: string | null) => {
         if (value) {
@@ -88,7 +94,6 @@ const Rating = () => {
                             />
                             <TimePicker label='C' date={filter.startTime} onChange={handleStartTimeChange} />
                             <TimePicker label='До' date={filter.endTime} onChange={handleEndTimeChange} />
-                            <Button mt={10}>Применить</Button>
                         </div>
                     </Accordion.Panel>
                 </Accordion.Item>
@@ -98,21 +103,16 @@ const Rating = () => {
                         <BarChart
                             h={300}
                             data={data}
-                            dataKey="month"
-                            series={[
-                                { name: 'Smartphones', color: 'cyan.7' },
-                                { name: 'Laptops', color: 'cyan.5' },
-                                { name: 'Tablets', color: 'cyan.3' },
-                            ]}
-                            tickLine="y"
-                            cursorFill='none'
-                            withLegend={false}
-                            withTooltip={false}
+                            dataKey="name"
+                            orientation="vertical"
+                            yAxisProps={{ width: 80 }}
+                            barProps={{ radius: 10 }}
+                            series={[{ name: 'Стоимость', color: 'cyan.6' }]}
                         />
                     </Accordion.Panel>
                 </Accordion.Item>
             </Accordion>
-            <Table>
+            <Table striped>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Название</Table.Th>
