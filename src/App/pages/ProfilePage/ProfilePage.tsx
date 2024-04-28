@@ -142,7 +142,7 @@ const ProfilePage = () => {
             <Group wrap="nowrap" gap={10} mt={3}>
               <IconChessKing stroke={1.5} size="20px" className={classes.icon} />
               <Text fz="sm" c="dimmed">
-                {achievement.name}
+                {achievement.name || 'Нет'}
               </Text>
             </Group>
             <Group wrap="nowrap" gap={10} mt={3}>
