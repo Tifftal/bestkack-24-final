@@ -1,15 +1,27 @@
-import { Accordion, Button, Select, Table } from '@mantine/core';
+import { Accordion, Select, Table } from '@mantine/core';
 import { IconAdjustmentsHorizontal, IconChartBar } from '@tabler/icons-react';
 import { BarChart } from '@mantine/charts';
 import TimePicker from '../TimePicker/TimePicker';
 import { useEffect, useState } from 'react';
-import { getRegions } from 'api/products/index';
+import { getProducts, getRegions } from 'api/products/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectFilterState } from 'store/FilterSlice/filterSelector';
+import { setEndTime, setRegion, setStartTime } from 'store/FilterSlice/FilterSlice';
+import { DateValue } from '@mantine/dates';
+import { selectProducts } from 'store/ProductsSlice/productSelector';
+import { format } from 'date-fns';
+import { setProducts } from 'store/ProductsSlice/ProductsSlice';
 
 import styles from './Rating.module.scss';
 
 const Rating = () => {
     const [regions, setRegions] = useState<string[]>([]);
-    const [selectedRegion, setSelectedRegion] = useState('');
+    const [data, setData] = useState([]);
+
+    const dispatch = useDispatch();
+
+    const filter = useSelector(selectFilterState);
+    const products = useSelector(selectProducts);
 
     useEffect(() => {
         getRegions()
@@ -19,35 +31,55 @@ const Rating = () => {
             .catch(error => {
                 console.error(error)
             })
-
     }, [])
 
-    const elements = [
-        { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-        { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-        { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-        { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-        { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-    ];
+    useEffect(() => {
+        console.log("HERE")
+        getProducts({
+            startTime: format(filter.startTime, 'yyyy-MM-dd HH:mm:ss.SS'),
+            endTime: format(filter.endTime, 'yyyy-MM-dd HH:mm:ss.SS'),
+            region: filter.region
+        })
+            .then(response => {
+                console.log(response);
+                const formattedData = response.data.map((item) => ({
+                    name: item.product.name,
+                    Стоимость: item.totalSpend,
+                }));
 
-    const data = [
-        { month: 'January', Smartphones: 1200, Laptops: 900, Tablets: 200 },
-        { month: 'February', Smartphones: 1900, Laptops: 1200, Tablets: 400 },
-        { month: 'March', Smartphones: 400, Laptops: 1000, Tablets: 200 },
-        { month: 'April', Smartphones: 1000, Laptops: 200, Tablets: 800 },
-    ];
+                console.log("DATA", formattedData);
 
-    const endDate = new Date();
-    const startDate = new Date(endDate.getTime() - (1 * 60 * 60 * 1000));
+                setData(formattedData);
+
+                dispatch(setProducts(response.data));
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+
+    }, [filter])
 
     const handleSelectChange = (value: string | null) => {
         if (value) {
-            setSelectedRegion(value);
+            dispatch(setRegion(value))
+        }
+    };
+
+    const handleStartTimeChange = (value: DateValue) => {
+        if (value instanceof Date) {
+            dispatch(setStartTime(value))
+        }
+    };
+
+    const handleEndTimeChange = (value: DateValue) => {
+        if (value instanceof Date) {
+            dispatch(setEndTime(value))
         }
     };
 
     return (
-        <>
+        <div className={styles.rating}>
             <Accordion defaultValue="Apples" chevron={<></>} classNames={styles}>
                 <Accordion.Item key='filters' value='filters'>
                     <Accordion.Control icon={<IconAdjustmentsHorizontal width={18} height={18} />}>Фильтры</Accordion.Control>
@@ -58,11 +90,10 @@ const Rating = () => {
                                 data={regions.map(item => item)}
                                 onChange={handleSelectChange}
                                 maxDropdownHeight={200}
-                                value={selectedRegion}
+                                value={filter.region}
                             />
-                            <TimePicker label='C' date={startDate} />
-                            <TimePicker label='До' date={endDate} />
-                            <Button mt={10}>Применить</Button>
+                            <TimePicker label='C' date={filter.startTime} onChange={handleStartTimeChange} />
+                            <TimePicker label='До' date={filter.endTime} onChange={handleEndTimeChange} />
                         </div>
                     </Accordion.Panel>
                 </Accordion.Item>
@@ -72,42 +103,35 @@ const Rating = () => {
                         <BarChart
                             h={300}
                             data={data}
-                            dataKey="month"
-                            series={[
-                                { name: 'Smartphones', color: 'cyan.7' },
-                                { name: 'Laptops', color: 'cyan.5' },
-                                { name: 'Tablets', color: 'cyan.3' },
-                            ]}
-                            tickLine="y"
-                            cursorFill='none'
-                            withLegend={false}
-                            withTooltip={false}
+                            dataKey="name"
+                            orientation="vertical"
+                            yAxisProps={{ width: 80 }}
+                            barProps={{ radius: 10 }}
+                            series={[{ name: 'Стоимость', color: 'cyan.6' }]}
                         />
                     </Accordion.Panel>
                 </Accordion.Item>
             </Accordion>
-            <Table>
+            <Table striped>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Название</Table.Th>
                         <Table.Th>Кол-во</Table.Th>
                         <Table.Th>Стоимость</Table.Th>
-                        <Table.Th>Регион</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{
-                    elements.map((element) => (
-                        <Table.Tr key={element.name}>
-                            <Table.Td>{element.position}</Table.Td>
-                            <Table.Td>{element.name}</Table.Td>
-                            <Table.Td>{element.symbol}</Table.Td>
-                            <Table.Td>{element.mass}</Table.Td>
+                    products.map((element) => (
+                        <Table.Tr key={element.product.id}>
+                            <Table.Td>{element.product.name}</Table.Td>
+                            <Table.Td>{element.amount}</Table.Td>
+                            <Table.Td>{element.totalSpend}</Table.Td>
                         </Table.Tr>
                     ))
                 }
                 </Table.Tbody>
             </Table>
-        </>
+        </div>
     )
 }
 

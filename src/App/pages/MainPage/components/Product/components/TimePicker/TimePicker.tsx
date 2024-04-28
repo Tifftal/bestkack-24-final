@@ -1,13 +1,14 @@
-import { DatesProvider, DateTimePicker } from '@mantine/dates';
+import { DatesProvider, DateTimePicker, DateValue } from '@mantine/dates';
 import 'dayjs/locale/ru';
 
 
 interface TimePickerProps {
     label: string;
     date: Date;
+    onChange: (value: DateValue) => void;
 }
 
-const TimePicker = ({ label, date }: TimePickerProps) => {
+const TimePicker = ({ label, date, onChange }: TimePickerProps) => {
     return (
         <DatesProvider settings={{ locale: 'ru' }}>
             <DateTimePicker
@@ -15,6 +16,7 @@ const TimePicker = ({ label, date }: TimePickerProps) => {
                 placeholder="Pick a Date"
                 defaultValue={date}
                 valueFormat="DD/MM/YYYY HH:mm"
+                onChange={onChange}
             />
         </DatesProvider >
     );

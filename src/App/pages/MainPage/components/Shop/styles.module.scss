@@ -8,8 +8,6 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 75px;
-
-    background-color: #C92A2A !important;
 }
 
 
@@ -23,7 +21,7 @@
     }
 
     50% {
-        color: orange;
+        color: rgb(251, 178, 174);
     }
 
     75% {
@@ -62,5 +60,28 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 30px;
+    margin-top: 20px;
+}
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.icon-arrow-down {
+    width: 24px;
+    height: 24px;
+  
+    transition: transform 0.5s ease-in-out;
+}
+
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+.arrow-down {
+  transform: rotate(0deg);
 }
