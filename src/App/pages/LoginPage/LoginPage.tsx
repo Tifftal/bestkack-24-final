@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login, loginValidate, test_three } from 'api/user/index';
+import { login, loginValidate } from 'api/user/index';
 import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
 
@@ -84,22 +84,6 @@ const LoginPage = () => {
         },
     });
 
-    const TestError = async () => {
-        try {
-            const response = await test_three()
-            console.log(response)
-        } catch ({ response }) {
-            const { data, status } = response;
-
-            dispatch(addNotification({
-                title: 'Ошибка',
-                status: status || undefined,
-                description: data?.message || 'Произошла ошибка при авторизации',
-                isOpen: true,
-            }))
-        }
-    }
-
     return (
         <form onSubmit={form.onSubmit(values => handleFormSubmit(values))} className={styles.form}>
             <div className={styles['form-input']}>
@@ -126,7 +110,6 @@ const LoginPage = () => {
                 />
                 <Button onClick={Login}>Войти</Button>
             </Group>
-            <Button onClick={TestError}>TEST ERROR</Button>
         </form >
     );
 }
