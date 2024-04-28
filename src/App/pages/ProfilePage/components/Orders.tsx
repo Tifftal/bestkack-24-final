@@ -21,7 +21,6 @@ const Orders = () => {
         try {
           const response = await getOrders(selectedSort, page);
           setTotalPages(response.data.totalPages)
-          console.log(response.data.totalPages)
           const newOrders = response.data.content;
           setOrders(prevOrders => [...prevOrders, ...newOrders]);
         } catch (error) {

@@ -57,11 +57,11 @@ const RegistrationPage: React.FC = () => {
             }
         } catch ({ response }) {
             const { data, status } = response;
-            console.log(data, status);
+            // console.log(data, status);
             if (data?.message == `User with username ${values.login} exists`) {
                 setError(true);
             }
-            if(data?.message === 'Phone number exists') {
+            if (data?.message === 'Phone number exists') {
                 setError(false);
                 navigate('/login');
             }

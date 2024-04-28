@@ -33,7 +33,7 @@ const LoginPage = () => {
         } catch ({ response }) {
             const { data, status } = response;
 
-            if (status === 409 && data.message.startsWith("Phone number")) {
+            if (status === 409 && data.message.startsWith("Номер телефона не")) {
                 navigate('/registration')
             }
 

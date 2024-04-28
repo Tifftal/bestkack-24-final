@@ -72,7 +72,7 @@ const Shop = () => {
             }]
         }, []);
 
-        console.log('CART', formattedCart)
+        // console.log('CART', formattedCart)
 
         try {
             await addToCart(formattedCart);
@@ -153,7 +153,7 @@ const Shop = () => {
     const getAmount = (id: string) => {
         const product = cart.find(product => product.id === id);
         if (product) {
-            console.log('AMOUNT', product.amount);
+            // console.log('AMOUNT', product.amount);
             return product.amount;
         } else {
             return null;

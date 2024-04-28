@@ -48,7 +48,7 @@ const Rating = () => {
                     Стоимость: item.totalSpend,
                 }));
 
-                console.log("DATA", formattedData);
+                // console.log("DATA", formattedData);
 
                 setData(formattedData);
 
