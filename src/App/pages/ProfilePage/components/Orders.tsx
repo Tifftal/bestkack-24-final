@@ -22,19 +22,18 @@ const Orders = () => {
   const items = orders.map((order, index) => (
     <Card key={index} mt={10} withBorder>
       <Accordion.Item key={order.id} value={order.orderTime}>
-        <Accordion.Control>{formatedDate(order.orderTime)}</Accordion.Control>
+        <Accordion.Control>Покупка от <b style={{ fontWeight: 600 }}>{formatedDate(order.orderTime)}</b></Accordion.Control>
         <Accordion.Panel>
           <div key={order.id} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {order.productOrders.map((productOrder, indexP) => (
-              <Card key={indexP} withBorder>
-                <Text size="xl" fs={700}>
+              <Card key={indexP} styles={{ root: { backgroundColor: '#EBEBEB' } }}>
+                <Text size="lg" fw={600}>
                   {productOrder.product.name}
                 </Text>
-                {/* <Text>Цена: {productOrder.product.price} руб.</Text>
-              <Text>Количество: {productOrder.amount}</Text> */}
+                <Text>Цена: {productOrder.product.price} руб.</Text>
+                <Text>Количество: {productOrder.amount}</Text>
                 <Text>
-                  Общая стоимость: {productOrder.product.price}руб x {productOrder.amount} = {productOrder.totalPrice}{' '}
-                  руб.
+                  Общая стоимость: {productOrder.totalPrice}{' '} руб.
                 </Text>
               </Card>
             ))}
