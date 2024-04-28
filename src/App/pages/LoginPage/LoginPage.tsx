@@ -8,6 +8,7 @@ import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
 
 import styles from './LoginPage.module.scss';
+import { da } from 'date-fns/locale';
 
 const LoginPage = () => {
     const [isPin, setIsPin] = useState<boolean>(false);
@@ -31,7 +32,10 @@ const LoginPage = () => {
             }
         } catch ({ response }) {
             const { data, status } = response;
-
+            if(data?.message === 'Phone number not exists') {
+                navigate('/registration');
+            }
+            console.log(data, status);
             dispatch(addNotification({
                 title: 'Ошибка',
                 status: status || undefined,

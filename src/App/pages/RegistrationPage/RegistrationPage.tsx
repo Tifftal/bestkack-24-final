@@ -4,10 +4,11 @@ import { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { registerValidate, register } from 'api/user';
+import { registerValidate, register, login } from 'api/user';
 import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
 import styles from './RegistrationPage.module.scss';
+import { set } from 'date-fns';
 
 interface FormValues {
     login: string;
@@ -20,6 +21,7 @@ interface FormValues {
 const RegistrationPage: React.FC = () => {
     const [isPin, setIsPin] = useState(false);
     const [pinCode, setPinCode] = useState('');
+    const [error, setError] = useState(false);
     const [formVal, setFormVal] = useState<FormValues>({
         login: '',
         name: '',
@@ -33,6 +35,7 @@ const RegistrationPage: React.FC = () => {
     const dispatch = useDispatch();
 
     const handleFormSubmit = async (values: any) => {
+        setError(false);
         try {
             const { status } = await registerValidate(
                 values.login,
@@ -54,7 +57,14 @@ const RegistrationPage: React.FC = () => {
             }
         } catch ({ response }) {
             const { data, status } = response;
-
+            console.log(data, status);
+            if (data?.message == `User with username ${values.login} exists`) {
+                setError(true);
+            }
+            if(data?.message === 'Phone number exists') {
+                setError(false);
+                navigate('/login');
+            }
             dispatch(addNotification({
                 title: 'Ошибка',
                 status: status || undefined,
@@ -157,6 +167,8 @@ const RegistrationPage: React.FC = () => {
                     key={form.key('phone')}
                     {...form.getInputProps('phone')}
                 />
+
+                {error && <p className={styles.error}>Пользователь с таким логином уже существует</p>}
 
                 <Group justify="flex-end" mt="md" styles={{ root: { display: !isPin ? 'flex' : 'none' } }}>
                     <Button type="submit">Получить код</Button>
