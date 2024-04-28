@@ -1,8 +1,8 @@
-import logo from 'assets/logo.png';
 import { ActionIcon, Button, Group, Image, Text } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
 import { IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import logo from 'assets/logo.png';
 import { selectUserState } from 'store/UserSlice/userSelector';
 
 import styles from './Navbar.module.scss';
@@ -38,7 +38,7 @@ const Navbar = () => {
                     </>
                 ) : (
                     <Button
-                    size='xs'
+                        size='xs'
                         onClick={() => { navigate('/') }}
                     >
                         На главную
