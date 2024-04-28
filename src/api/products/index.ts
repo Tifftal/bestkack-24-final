@@ -6,6 +6,7 @@ const ENDPOINTS = {
     productsList: '/main/products',
     addToCart: '/main/order',
     complete: '/main/order/complete',
+    ordersList: '/main/orders',
 };
 
 export const getProducts = async ({ startTime, endTime, region }: { startTime?: string, endTime?: string, region?: string }) => {
@@ -33,4 +34,11 @@ export const addToCart = async (payload: Record<string, number | string>[]) => {
 
 export const completeShopping = async (region: string) => {
     return await apiInstance.post(`${ENDPOINTS.complete}?region=${region}`)
+};
+
+export const getOrders = async (
+    sort: string | null,
+) => {
+    let URL = `${ENDPOINTS.ordersList}/?page=0&size=100&sort=${sort ? 'orderTime,asc' : 'orderTime,desc'}`;
+    return await apiInstance.get(URL);
 };

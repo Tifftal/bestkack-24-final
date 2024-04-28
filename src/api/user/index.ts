@@ -9,6 +9,7 @@ const ENDPOINTS = {
   me: '/main/auth/user/me',
   edit: '/main/auth/user/me',
   push: '/main/auth/user/token',
+  achiviements: '/main/user/achievement',
 };
 
 export const test_one = async () => {
@@ -121,6 +122,20 @@ export const updateUser = async (user: UserInitials) => {
 
   return data;
 
+}
+
+export const getAchievements = async () => {
+  const { data, status } = await apiInstance.get(ENDPOINTS.achiviements);
+
+  if (status === 400) {
+    throw new Error('Bad request');
+  }
+
+  if (status === 401) {
+    throw new Error('Unauthorized');
+  }
+
+  return data;
 }
 
 // export const getUsers = async ({ hasDepartment, departmentId, role }: { hasDepartment?: boolean | null, departmentId?: string | null, role?: string }) => {
