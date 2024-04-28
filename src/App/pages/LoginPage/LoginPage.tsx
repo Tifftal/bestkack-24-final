@@ -31,10 +31,22 @@ const LoginPage = () => {
                 setPhone(values.phone);
             }
         } catch ({ response }) {
+            console.log(response);
             const { data, status } = response;
 
             if (status === 409 && data.message.startsWith("Номер телефона")) {
                 navigate('/registration')
+            }
+
+            if (status === 503) {
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: 'Сервис временно недоступен',
+                    isOpen: true,
+                }))
+
+                return;
             }
 
             dispatch(addNotification({
@@ -63,6 +75,17 @@ const LoginPage = () => {
             navigate('/');
         } catch ({ response }) {
             const { data, status } = response;
+
+            if (status === 503) {
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: 'Сервис временно недоступен',
+                    isOpen: true,
+                }))
+
+                return;
+            }
 
             dispatch(addNotification({
                 title: 'Ошибка',

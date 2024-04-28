@@ -64,6 +64,18 @@ const RegistrationPage: React.FC = () => {
                 setError(false);
                 navigate('/login');
             }
+
+            if (status === 503) {
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: 'Сервис временно недоступен',
+                    isOpen: true,
+                }))
+
+                return;
+            }
+
             dispatch(addNotification({
                 title: 'Ошибка',
                 status: status || undefined,
@@ -93,6 +105,17 @@ const RegistrationPage: React.FC = () => {
             navigate('/');
         } catch ({ response }) {
             const { data, status } = response;
+
+            if (status === 503) {
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: 'Сервис временно недоступен',
+                    isOpen: true,
+                }))
+
+                return;
+            }
 
             dispatch(addNotification({
                 title: 'Ошибка',

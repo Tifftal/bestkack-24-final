@@ -94,6 +94,17 @@ const ProfilePage = () => {
       .catch(({ response }) => {
         const { data, status } = response;
 
+        if (status === 503) {
+          dispatch(addNotification({
+            title: 'Ошибка',
+            status: status || undefined,
+            description: 'Сервис временно недоступен',
+            isOpen: true,
+          }))
+
+          return;
+        }
+
         dispatch(addNotification({
           title: 'Ошибка',
           status: status || undefined,
