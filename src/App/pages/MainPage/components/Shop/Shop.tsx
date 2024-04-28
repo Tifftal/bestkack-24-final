@@ -72,6 +72,8 @@ const Shop = () => {
             }]
         }, []);
 
+        console.log('CART', formattedCart)
+
         try {
             await addToCart(formattedCart);
         } catch ({ response }) {
@@ -130,6 +132,7 @@ const Shop = () => {
                 }));
 
                 dispatch(complete())
+                close()
             }
         } catch ({ response }) {
             const { data, status } = response;
@@ -258,14 +261,13 @@ const Shop = () => {
                                 />
                             </Card.Section>
 
-                            <Group justify="space-between" mt="md" mb="xs">
-                                <Text fw={500} size="sm">{product.name || ''}</Text>
-                                <Badge color="pink">{product.price} р.</Badge>
-                            </Group>
+                            <Text fw={500} size="md" mt='md'>{product.name || ''}</Text>
 
                             <Text size="sm" c="dimmed">
                                 {product.description || ''}
                             </Text>
+
+                            <Text fw={600} size="md" mt='sm'>{product.price || ''} руб.</Text>
 
                             <div style={{ flexGrow: 1 }} />
 
@@ -276,7 +278,6 @@ const Shop = () => {
 
                 {cart.length > 0 && (
                     <Button
-
                         onClick={open}
                         className={styles.cart}
                         size='xl'
