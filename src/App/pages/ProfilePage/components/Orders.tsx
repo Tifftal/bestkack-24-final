@@ -10,14 +10,38 @@ const formatedDate = (date: string) => {
 
 const Orders = () => {
   const [selectedSort, setSelectedSort] = useState<string>('desc');
-
+  const [page, setPage] = useState(0);
   const [orders, setOrders] = useState([]);
+  const [totalPages, setTotalPages] = useState(Infinity);
+
+
   useEffect(() => {
-    getOrders(selectedSort).then((response) => {
-      setOrders(response.data.content);
-      console.log(response.data.content);
-    });
-  }, [selectedSort]);
+    if (page < totalPages) {
+      const loadOrders = async () => {
+        try {
+          const response = await getOrders(selectedSort, page);
+          setTotalPages(response.data.totalPages)
+          console.log(response.data.totalPages)
+          const newOrders = response.data.content;
+          setOrders(prevOrders => [...prevOrders, ...newOrders]);
+        } catch (error) {
+          console.error("Error loading orders:", error);
+        }
+      };
+
+      loadOrders();
+    }
+  }, [selectedSort, page]);
+
+  const loadNextPage = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+
+  window.onscroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+      loadNextPage();
+    }
+  };
 
   const items = orders.map((order, index) => (
     <Card key={index} mt={10} withBorder>

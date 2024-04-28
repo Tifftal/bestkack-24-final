@@ -38,7 +38,8 @@ export const completeShopping = async (region: string) => {
 
 export const getOrders = async (
     sort: string | null,
+    page: number
 ) => {
-    let URL = `${ENDPOINTS.ordersList}/?page=0&size=100&sort=orderTime,${sort}`;
+    let URL = `${ENDPOINTS.ordersList}/?page=${page}&size=10&sort=orderTime,${sort}`;
     return await apiInstance.get(URL);
 };
