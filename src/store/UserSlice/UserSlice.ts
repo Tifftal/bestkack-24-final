@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createReduxHookFactory } from "../createReduxHookFactory";
 import { SliceActions } from "../sliceActions";
-import { ProductType } from "./../ProductsSlice/types";
 
 export type JwtTokens = {
     access: string;
@@ -27,6 +26,7 @@ export type UserType = {
     phone: string,
     jwtTokens: JwtTokens;
     products: CartType[];
+    region: string;
 }
 
 export type UserState = UserType;
@@ -44,6 +44,7 @@ const initialState: UserState = {
         refresh: '',
     },
     products: [],
+    region: '',
 };
 
 export const userSlice = createSlice({
@@ -82,6 +83,12 @@ export const userSlice = createSlice({
                     products.splice(existingProductIndex, 1);
                 }        
             }
+        },
+        setRegion: (state, action: PayloadAction<string | null>) => {
+            state.region = action.payload || '';
+        },
+        complete: (state) => {
+            state.products = [];
         }
     }
 })
@@ -90,6 +97,8 @@ export const {
     setUser,
     addProductToCart,
     removeProductFromCart,
+    setRegion,
+    complete,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

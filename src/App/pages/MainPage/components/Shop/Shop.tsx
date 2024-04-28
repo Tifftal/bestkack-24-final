@@ -1,24 +1,26 @@
-import { Button, Card, Container, Grid, GridCol, Group, Image, Input, Modal, Table, Text } from "@mantine/core";
+import { Button, Card, Container, Grid, GridCol, Group, Image, Input, Modal, Select, Table, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, getProductsList } from "api/products/index";
+import { addToCart, completeShopping, getProductsList, getRegions } from "api/products/index";
 import { addNotification } from "store/NotificationSlice/NotificationSlice";
 import { setProductsList } from "store/ProductsSlice/ProductsSlice";
 import { selectProductsList } from "store/ProductsSlice/productSelector";
 import { ProductType } from "store/ProductsSlice/types";
-import { addProductToCart, removeProductFromCart } from "store/UserSlice/UserSlice";
-import { selectUserCart } from "store/UserSlice/userSelector";
+import { addProductToCart, complete, removeProductFromCart, setRegion } from "store/UserSlice/UserSlice";
+import { selectUserCart, selectUsersRegion } from "store/UserSlice/userSelector";
 
 import styles from "./styles.module.scss";
 
 const Shop = () => {
     const [pattern, setPattern] = useState('');
+    const [regions, setRegions] = useState([]);
     const [opened, { open, close }] = useDisclosure(false);
 
     const products = useSelector(selectProductsList);
     const cart = useSelector(selectUserCart);
+    const region = useSelector(selectUsersRegion);
 
     const dispatch = useDispatch();
 
@@ -29,8 +31,32 @@ const Shop = () => {
                     dispatch(setProductsList(data))
                 }
             })
-            .catch(err => {
-                console.error('Error occurred while fetching products data, err: ', err);
+            .catch(({ response }) => {
+                const { data, status } = response;
+
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: data?.message || 'Ошибка при получении данных',
+                    isOpen: true,
+                }))
+            })
+
+        getRegions()
+            .then(({ data, status }) => {
+                if (status === 200) {
+                    setRegions(data);
+                }
+            })
+            .catch(({ response }) => {
+                const { data, status } = response;
+
+                dispatch(addNotification({
+                    title: 'Ошибка',
+                    status: status || undefined,
+                    description: data?.message || 'Ошибка при получении данных',
+                    isOpen: true,
+                }))
             })
     }, [pattern]);
 
@@ -81,11 +107,39 @@ const Shop = () => {
         }
     };
 
+    const handleSetRegion = (region: string | null) => {
+        dispatch(setRegion(region));
+    }
+
+    const handleCompleteShopping = async () => {
+        try {
+            const { status } = await completeShopping(region);
+
+            if (status === 200) {
+                dispatch(addNotification({
+                    title: 'Успешно',
+                    status: status || undefined,
+                    description: 'Покупка успешно оформлена',
+                    isOpen: true,
+                }));
+
+                dispatch(complete())
+            }
+        } catch ({ response }) {
+            const { data, status } = response;
+
+            dispatch(addNotification({
+                title: 'Ошибка',
+                status: status || undefined,
+                description: data?.message || 'Произошла ошибка при добавлении товара',
+                isOpen: true,
+            }))
+        }
+    }
+
     const totalAmount = cart.reduce((acc, { amount, price }) => {
         return acc + amount * price;
     }, 0);
-
-    console.log('products', cart)
 
     return (
         <>
@@ -95,7 +149,7 @@ const Shop = () => {
                 onChange={(e) => setPattern(e.target.value)}
             />
 
-            <Grid>
+            <Grid style={{ paddingBottom: "70px" }}>
                 <Modal
                     opened={opened && (cart.length > 0)}
                     onClose={close}
@@ -137,6 +191,13 @@ const Shop = () => {
                             </Table>
                         </div>
 
+                        <Select
+                            data={regions || []}
+                            value={region}
+                            onChange={handleSetRegion}
+                            style={{marginTop: '20px'}}
+                        />
+
                         <Button
                             className={styles['buy-btn']}
                             styles={{
@@ -149,6 +210,8 @@ const Shop = () => {
                                     justifyContent: "space-between"
                                 }
                             }}
+                            disabled={!region}
+                            onClick={handleCompleteShopping}
                         >
                             <Text size='lg' fw={700}>
                                 Купить

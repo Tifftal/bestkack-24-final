@@ -5,6 +5,7 @@ const ENDPOINTS = {
     regions: '/main/regions',
     productsList: '/main/products',
     addToCart: '/main/order',
+    complete: '/main/order/complete',
 };
 
 export const getProducts = async ({ startTime, endTime, region }: { startTime?: string, endTime?: string, region?: string }) => {
@@ -28,4 +29,8 @@ export const addToCart = async (payload: Record<string, number | string>[]) => {
     return await apiInstance.put(ENDPOINTS.addToCart,
         [...payload],
     );
+};
+
+export const completeShopping = async (region: string) => {
+    return await apiInstance.post(`${ENDPOINTS.complete}?region=${region}`)
 };

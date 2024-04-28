@@ -5,3 +5,5 @@ export const selectUserState = (state: RootState) => {
 };
 
 export const selectUserCart = (state: RootState) => selectUserState(state).products;
+
+export const selectUsersRegion = (state: RootState) => selectUserState(state).region;
