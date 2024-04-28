@@ -7,9 +7,16 @@ const ENDPOINTS = {
     addToCart: '/main/order',
 };
 
-export const getProducts = async () => {
-    return await apiInstance.get(ENDPOINTS.products);
-};
+export const getProducts = async ({ startTime, endTime, region }: { startTime?: string, endTime?: string, region?: string }) => {
+    let URL = ENDPOINTS.products + `?startTime=${startTime}&endTime=${endTime}`;
+    if (region) {
+        URL += `&region=${region}`
+    }
+
+    console.log(URL)
+
+    return await apiInstance.get(URL);
+}
 
 export const getRegions = async () => {
     return await apiInstance.get(ENDPOINTS.regions);
@@ -20,7 +27,7 @@ export const getProductsList = async (pattern: string) => {
 };
 
 export const addToCart = async (payload: Record<string, number | string>[]) => {
-    return await apiInstance.put(ENDPOINTS.addToCart, 
+    return await apiInstance.put(ENDPOINTS.addToCart,
         [...payload],
     );
 };
