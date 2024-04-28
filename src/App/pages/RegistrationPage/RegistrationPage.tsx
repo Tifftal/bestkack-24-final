@@ -3,8 +3,8 @@ import { useForm, isNotEmpty, hasLength } from '@mantine/form';
 import { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { registerValidate, register, login } from 'api/user';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerValidate, register } from 'api/user';
 import { addNotification } from 'store/NotificationSlice/NotificationSlice';
 import { setUser } from 'store/UserSlice/UserSlice';
 import styles from './RegistrationPage.module.scss';
@@ -170,7 +170,9 @@ const RegistrationPage: React.FC = () => {
 
                 {error && <p className={styles.error}>Пользователь с таким логином уже существует</p>}
 
-                <Group justify="flex-end" mt="md" styles={{ root: { display: !isPin ? 'flex' : 'none' } }}>
+
+                <Group justify="space-between" mt="md" styles={{ root: { display: !isPin ? 'flex' : 'none' } }}>
+                    <Link to='/login' style={{ color: 'dodgerblue', textAlign: 'right' }}>Уже есть аккаунт?</Link>
                     <Button type="submit">Получить код</Button>
                 </Group>
                 <Group
